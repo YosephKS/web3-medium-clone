@@ -1,10 +1,14 @@
 import { StrictMode } from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./App";
 import { MoralisProvider } from "react-moralis";
 import reportWebVitals from "./reportWebVitals";
 
-ReactDOM.render(
+const rootElement = document.getElementById("root");
+if (!rootElement) throw new Error("Failed to find the root element");
+const root = createRoot(rootElement);
+
+root.render(
   <StrictMode>
     <MoralisProvider
       initializeOnMount
@@ -13,8 +17,7 @@ ReactDOM.render(
     >
       <App />
     </MoralisProvider>
-  </StrictMode>,
-  document.getElementById("root")
+  </StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
