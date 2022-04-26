@@ -1,0 +1,19 @@
+{
+  "name": "web3-medium-clone",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/YosephKS/web3-medium-clone.git",
+  "authors": [
+    "Yoseph Kurnia Soenggoro <yosephkurniasoenggoro@gmail.com>"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^4.5.0",
+    "chai": "^4.3.6",
+    "ethereum-waffle": "^3.4.4",
+    "ethers": "^5.6.4",
+    "hardhat": "^2.9.3"
+  }
+}
