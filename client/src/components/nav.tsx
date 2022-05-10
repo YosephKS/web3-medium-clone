@@ -1,7 +1,7 @@
 import { FC } from "react";
 import "./nav.css";
 import logo from "../images/medium.png";
-import Svg from "./svg";
+import { Link } from "react-router-dom";
 import { ConnectButton } from "web3uikit";
 const Nav: FC = () => {
   return (
@@ -11,9 +11,15 @@ const Nav: FC = () => {
           <img className="logo" src={logo} alt="logo"></img>
         </div>
         <div className="tabs">
-          <div>Write</div>
-          <div>Membership</div>
-          <div>Our Story</div>
+          <div>
+            <Link to="/creator">Write</Link>
+          </div>
+          <div>
+            <Link to="/membership">Membership</Link>
+          </div>
+          <div>
+            <Link to="/ourStory">Our Story</Link>
+          </div>
         </div>
         <div className="lrContainers">
           <ConnectButton />

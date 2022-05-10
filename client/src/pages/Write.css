@@ -1,0 +1,33 @@
+.containerCreator {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 80vh;
+  background-size: cover;
+  z-index: -1;
+}
+.containerCreator2 {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 20vh;
+  background-size: cover;
+  z-index: -1;
+}
+.creatorNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 93%;
+  padding: 30px 60px;
+  color: white;
+}
+
+.creatorSignIn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 93%;
+  padding: 30px 60px;
+  color: white;
+}

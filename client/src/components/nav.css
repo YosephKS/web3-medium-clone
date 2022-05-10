@@ -10,7 +10,13 @@
   width: 20vw;
   height: calc(20vw * 0.3);
 }
-
+a {
+  color: #fff;
+  text-decoration: none;
+}
+a:hover {
+  color: #00f;
+}
 .lrContainers {
   width: 200px;
   justify-content: end;
