@@ -1,0 +1,22 @@
+.container {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 50vh;
+  background-size: cover;
+  z-index: -999;
+}
+.container2 {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 50vh;
+  background-size: cover;
+  z-index: -999;
+}
+
+.containerGradinet {
+  background-image: linear-gradient(rgb(0, 0, 0, 0.75), rgb(0, 0, 0, 0));
+  height: 50%;
+  width: 100%;
+}
