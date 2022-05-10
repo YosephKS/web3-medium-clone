@@ -2,7 +2,7 @@
   position: absolute;
   bottom: 0;
   width: 100vw;
-  height: 50vh;
+  height: 80vh;
   background-size: cover;
   z-index: -999;
 }
@@ -10,7 +10,7 @@
   position: absolute;
   top: 0;
   width: 100vw;
-  height: 50vh;
+  height: 20vh;
   background-size: cover;
   z-index: -999;
 }
@@ -19,4 +19,22 @@
   background-image: linear-gradient(rgb(0, 0, 0, 0.75), rgb(0, 0, 0, 0));
   height: 50%;
   width: 100%;
+}
+
+.homeContent {
+  margin-top: 20vh;
+  color: black;
+  /* width: 300px; */
+  padding-left: 100px;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 70px;
+  margin-bottom: 15px;
+}
+
+.text {
+  font-weight: 600;
+  margin-bottom: 25px;
 }

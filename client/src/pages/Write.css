@@ -31,3 +31,10 @@
   padding: 30px 60px;
   color: white;
 }
+
+.writeContent {
+  margin-top: 10vh;
+  color: black;
+  width: 500px;
+  padding-left: 100px;
+}

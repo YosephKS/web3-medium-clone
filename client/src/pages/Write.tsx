@@ -29,6 +29,15 @@ const Write: FC = () => {
           </div>
         </div>
       </div>
+      <div className="writeContent">
+        <div className="title">Publish, grow, and earn, all in one place</div>
+        <div className="text">
+          If you have a story to tell, knowledge to share, or a perspective to
+          offer — welcome home. Sign up for free so your writing can thrive in a
+          network supported by millions of readers — not ads..
+        </div>
+        <Button text="Start Writing" onClick={() => console.log("clicked")} />
+      </div>
     </>
   );
 };
