@@ -1,0 +1,39 @@
+.topBanner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 93%;
+  padding: 30px 60px;
+}
+
+.logo {
+  width: 20vw;
+  height: calc(20vw * 0.3);
+}
+a {
+  color: #fff;
+  text-decoration: none;
+}
+a:hover {
+  color: #00f;
+}
+.lrContainers {
+  width: 200px;
+  justify-content: end;
+  display: flex;
+  align-items: center;
+}
+
+.tabs {
+  color: white;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  gap: 35px;
+  font-size: 16px;
+}
+
+.selected {
+  padding-bottom: 5px;
+  border-bottom: 2px solid white;
+}

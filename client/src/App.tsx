@@ -1,16 +1,19 @@
 import { FC } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/index";
+import Home from "./pages/home";
 import Article from "./pages/article";
+import Write from "./pages/Write";
+import NewStory from "./pages/NewStory";
 
 const App: FC = () => {
   return (
     <div>
-      <p>AppBar</p>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Home />} />
           <Route path="article/:articleId" element={<Article />} />
+          <Route path="/creator" element={<Write />} />
+          <Route path="/newStory" element={<NewStory />} />
         </Routes>
       </BrowserRouter>
     </div>

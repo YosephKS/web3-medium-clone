@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import { MoralisProvider } from "react-moralis";
 import reportWebVitals from "./reportWebVitals";
-
+import { NotificationProvider } from "web3uikit";
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Failed to find the root element");
 const root = createRoot(rootElement);
@@ -15,7 +15,9 @@ root.render(
       appId={process.env.REACT_APP_MORALIS_APP_ID ?? ""}
       serverUrl={process.env.REACT_APP_MORALIS_SERVER_URL ?? ""}
     >
-      <App />
+      <NotificationProvider>
+        <App />
+      </NotificationProvider>
     </MoralisProvider>
   </StrictMode>
 );
