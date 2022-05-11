@@ -1,11 +1,29 @@
 import { FC } from "react";
 import { useMoralis } from "react-moralis";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/medium.png";
 import "./Write.css";
-import { ConnectButton, Icon, Button, useNotification } from "web3uikit";
+import { ConnectButton, Button, useNotification } from "web3uikit";
 const Write: FC = () => {
-  const { Moralis, account } = useMoralis();
+  const { account } = useMoralis();
+  const dispatch = useNotification();
+  const navigate = useNavigate();
+
+  const handleNoAccount = () => {
+    dispatch({
+      type: "error",
+      message: `You need to connect your wallet to create a story`,
+      title: "Not Connected",
+      position: "topL",
+    });
+  };
+  const clickHandler = () => {
+    if (account) {
+      navigate("/newStory");
+    } else {
+      handleNoAccount();
+    }
+  };
   return (
     <>
       <div className="containerCreator" style={{ backgroundColor: "#FF4C4C" }}>
@@ -22,9 +40,6 @@ const Write: FC = () => {
         </div>
         <div className="creatorSignIn">
           <div>
-            <Button onClick={() => console.log("clicked")} text="Sign in" />
-          </div>
-          <div>
             <ConnectButton />
           </div>
         </div>
@@ -36,7 +51,7 @@ const Write: FC = () => {
           offer — welcome home. Sign up for free so your writing can thrive in a
           network supported by millions of readers — not ads..
         </div>
-        <Button text="Start Writing" onClick={() => console.log("clicked")} />
+        <Button text="Start Writing" onClick={clickHandler} />
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { ConnectButton, Icon, Button, useNotification } from "web3uikit";
+import { Button } from "web3uikit";
 import "./home.css";
 import Nav from "../components/nav";
 const Home: FC = () => {
