@@ -53,5 +53,10 @@ module.exports = {
         mnemonic,
       },
     },
+    mumbai: {
+      url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_SPEEDY_NODES_KEY}/polygon/mumbai`,
+      chainId: 80001,
+      accounts: [""],
+    },
   },
 };
