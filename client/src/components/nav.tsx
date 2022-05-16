@@ -3,7 +3,10 @@ import "./nav.css";
 import logo from "../images/medium.png";
 import { Link } from "react-router-dom";
 import { ConnectButton } from "web3uikit";
-const Nav: FC = () => {
+interface ChildProps {
+  account: string | null;
+}
+const Nav: FC<ChildProps> = ({ account }) => {
   return (
     <div>
       <div className="topBanner">
@@ -20,6 +23,11 @@ const Nav: FC = () => {
           <div>
             <Link to="/ourStory">Our Story</Link>
           </div>
+          {account ? (
+            <div>
+              <Link to="/myBlogs">My Blogs</Link>
+            </div>
+          ) : null}
         </div>
         <div className="lrContainers">
           <ConnectButton />
