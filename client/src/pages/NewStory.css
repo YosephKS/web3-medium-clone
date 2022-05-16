@@ -8,7 +8,7 @@
   justify-items: center;
   background-color: black;
   position: sticky;
-  z-index: 999;
+  z-index: -999;
   top: 0;
   width: 100%;
 }
