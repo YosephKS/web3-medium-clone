@@ -1,19 +1,12 @@
 import { FC } from "react";
 import { Button } from "web3uikit";
-import { useMoralis } from "react-moralis";
 import "./home.css";
-import Nav from "../components/nav";
 const Home: FC = () => {
-  const { account } = useMoralis();
   return (
     <>
-      <div className="container2" style={{ backgroundColor: "black" }}>
-        <div className="containerGradinet"></div>
-      </div>
       <div className="container" style={{ backgroundColor: "yellow" }}>
         <div className="containerGradinet"></div>
       </div>
-      <Nav account={account} />
       <div className="homeContent">
         <div className="title">Stay Curious</div>
         <div className="text">

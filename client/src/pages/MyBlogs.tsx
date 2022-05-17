@@ -1,10 +1,8 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useMoralisWeb3Api, useMoralis } from "react-moralis";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-
+import { NFT } from "web3uikit";
+import "./MyBlogs.css";
 interface Metadata {
   token_address: string;
   token_id: string;
@@ -19,6 +17,7 @@ interface Metadata {
   name: string;
   symbol: string;
 }
+
 const MyBlogs: FC = () => {
   const [metadata, setMetadata] = useState<Metadata[] | undefined>();
   const navigate = useNavigate();
@@ -37,33 +36,35 @@ const MyBlogs: FC = () => {
     const metadata = polygonNFTs.result;
     setMetadata(metadata);
   };
+  console.log("account in myblogs", account);
   useEffect(() => {
     if (!account) {
-      navigate("/creator");
+      navigate("/");
     } else {
       fetchNFTs();
     }
   }, [account]);
   return (
-    <>
+    <div className="blogsNFT">
       {metadata &&
         metadata.map((data, i) => {
           // @ts-ignore
-          const { description, image, externalUrl } = JSON.parse(data.metadata);
-          // make the deatilpage daynamic param and then get the content from ipfs.
+          const { description, externalUrl } = JSON.parse(data.metadata);
+          const lastSegment = externalUrl.split("/").pop();
+          const tokenId = data.token_id;
           return (
-            <Card sx={{ maxWidth: 345 }} onClick={() => console.log("clicked")}>
-              <CardHeader title={description} subheader="May 14, 2022" />
-              <CardMedia
-                component="img"
-                height="194"
-                image={image}
-                alt="Paella dish"
+            <Link to={`/blog/${lastSegment}/${tokenId}`} key={i}>
+              <NFT
+                address="0x19089c2F05AE286F21467d131e0679902eeffC13"
+                chain="mumbai"
+                fetchMetadata
+                tokenId={data.token_id}
+                name={description}
               />
-            </Card>
+            </Link>
           );
         })}
-    </>
+    </div>
   );
 };
 

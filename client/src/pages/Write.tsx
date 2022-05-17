@@ -29,21 +29,6 @@ const Write: FC = () => {
       <div className="containerCreator" style={{ backgroundColor: "#FF4C4C" }}>
         <div className="containerGradinet"></div>
       </div>
-      <div className="containerCreator2" style={{ backgroundColor: "black" }}>
-        <div className="containerGradinet"></div>
-      </div>
-      <div className="creatorNav">
-        <div>
-          <Link to="/">
-            <img className="logo" src={logo} alt="logo"></img>
-          </Link>
-        </div>
-        <div className="creatorSignIn">
-          <div>
-            <ConnectButton />
-          </div>
-        </div>
-      </div>
       <div className="writeContent">
         <div className="title">Publish, grow, and earn, all in one place</div>
         <div className="text">

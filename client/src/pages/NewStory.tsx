@@ -86,17 +86,6 @@ const NewStory: FC = () => {
         <Loading />
       ) : (
         <div>
-          <div className="writeNav">
-            <NavLink to="/">
-              <div>
-                <img className="writeLogo" src={logo} alt="logo" />
-              </div>
-            </NavLink>
-
-            <div>
-              <ConnectButton />
-            </div>
-          </div>
           <div className="write">
             <form onSubmit={uploadFile} className="writeForm">
               <div className="writeFormGroup">
