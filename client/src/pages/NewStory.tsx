@@ -4,7 +4,7 @@ import logo from "../images/medium.png";
 import ModalComp from "../components/modal";
 import Loading from "../components/Loading";
 import { ConnectButton, useNotification } from "web3uikit";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useMoralisFile } from "react-moralis";
 const NewStory: FC = () => {
   const [title, setTitle] = useState<string>("");
@@ -86,16 +86,6 @@ const NewStory: FC = () => {
         <Loading />
       ) : (
         <div>
-          <div className="writeNav">
-            <div>
-              <Link to="/">
-                <img className="writeLogo" src={logo} alt="logo" />
-              </Link>
-            </div>
-            <div>
-              <ConnectButton />
-            </div>
-          </div>
           <div className="write">
             <form onSubmit={uploadFile} className="writeForm">
               <div className="writeFormGroup">
