@@ -10,7 +10,7 @@ import { Url } from "../config/constants";
 const Blog: FC = () => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  const { url, tokenId } = useParams();
+  const { url } = useParams();
   const navigate = useNavigate();
   const { account } = useMoralis();
   const fetchBlogContent = async () => {
@@ -29,16 +29,7 @@ const Blog: FC = () => {
   return (
     <div className="singleBlog">
       <div className="singleBlogWrapper">
-        <div className="singleBlogImg">
-          {/* <NFT
-            address="0x19089c2F05AE286F21467d131e0679902eeffC13"
-            chain="mumbai"
-            fetchMetadata
-            // @ts-ignore
-            tokenId={tokenId}
-            name={title}
-          /> */}
-        </div>
+        <div className="singleBlogImg"></div>
         <div className="singleBlogContent">
           <h1 className="singleBlogTitle">{title}</h1>
           <p className="singleBlogText">{text}</p>
