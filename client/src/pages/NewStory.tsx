@@ -1,20 +1,30 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import "./NewStory.css";
-import logo from "../images/medium.png";
-import ModalComp from "../components/modal";
 import Loading from "../components/Loading";
-import { ConnectButton, useNotification } from "web3uikit";
-import { Link, NavLink } from "react-router-dom";
-import { useMoralisFile } from "react-moralis";
+import { useNotification } from "web3uikit";
+
+import {
+  useMoralisFile,
+  useMoralis,
+  useWeb3ExecuteFunction,
+} from "react-moralis";
 const NewStory: FC = () => {
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
-  const [ipfsUrl, setIpfsUrl] = useState<string>("");
-  const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { saveFile } = useMoralisFile();
+  const { Moralis, account } = useMoralis();
   const dispatch = useNotification();
+  const contractProcessor = useWeb3ExecuteFunction();
 
+  const handleSuccess = () => {
+    dispatch({
+      type: "success",
+      message: `Nice! You just mint a Nft!!`,
+      title: "Miniting Succesful",
+      position: "topL",
+    });
+  };
   const handleError = (msg: string) => {
     dispatch({
       type: "error",
@@ -23,8 +33,70 @@ const NewStory: FC = () => {
       position: "topL",
     });
   };
+  const uploadNftMetada = async (url: string) => {
+    const metadataNft = {
+      image:
+        "https://ipfs.moralis.io:2053/ipfs/QmWEsG4ayh75BMk2H1CowAdALPjsi3fD7CSZ6qxNM1yNnz/image/moralis.png",
+      description: title,
+      externalUrl: url,
+    };
+    const resultNft = await saveFile(
+      "metadata.json",
+      { base64: btoa(JSON.stringify(metadataNft)) },
+      {
+        type: "base64",
+        saveIPFS: true,
+      }
+    );
 
-  //upload blog content and nft metadata to ipfs
+    return resultNft;
+  };
+
+  const mint = async (account: string, uri: string) => {
+    console.log(account);
+    let options = {
+      contractAddress: "0x19089c2F05AE286F21467d131e0679902eeffC13",
+      functionName: "safeMint",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "to",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "uri",
+              type: "string",
+            },
+          ],
+          name: "safeMint",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+      ],
+      params: {
+        to: account,
+        uri: uri,
+      },
+      msgValue: Moralis.Units.ETH(1),
+    };
+
+    await contractProcessor.fetch({
+      params: options,
+      onSuccess: () => {
+        handleSuccess();
+      },
+      onError: (error) => {
+        console.log("error message", error.message);
+        // @ts-ignore
+        handleError(error.message);
+      },
+    });
+  };
+  //upload blog content and nft metadata to ipfs and mint
   const uploadFile = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // @ts-ignore
@@ -43,26 +115,14 @@ const NewStory: FC = () => {
           saveIPFS: true,
         }
       );
-      const metadataNft = {
-        image:
-          "https://ipfs.moralis.io:2053/ipfs/QmWEsG4ayh75BMk2H1CowAdALPjsi3fD7CSZ6qxNM1yNnz/image/moralis.png",
-        description: title,
-        // @ts-ignore
-        externalUrl: result.ipfs(),
-      };
+      console.log("result1", result);
       try {
-        const resultNft = await saveFile(
-          "metadata.json",
-          { base64: btoa(JSON.stringify(metadataNft)) },
-          {
-            type: "base64",
-            saveIPFS: true,
-          }
-        );
         // @ts-ignore
-        setIpfsUrl(resultNft.ipfs());
+        const resultNft = await uploadNftMetada(result.ipfs());
+        // @ts-ignore
+        await mint(account, resultNft.ipfs());
         setLoading(false);
-        setVisible(true);
+        //setVisible(true);
       } catch (error) {
         setLoading(false);
         console.log(error);
@@ -79,7 +139,6 @@ const NewStory: FC = () => {
     setTitle("");
   };
 
-  useEffect(() => {}, [ipfsUrl, visible]);
   return (
     <>
       {loading ? (
@@ -116,16 +175,6 @@ const NewStory: FC = () => {
               </button>
             </form>
           </div>
-          {visible && (
-            <ModalComp
-              isVisible={visible}
-              ipfsUrl={ipfsUrl}
-              setVisible={() => {
-                console.log("worked");
-                setVisible(false);
-              }}
-            />
-          )}
         </div>
       )}
     </>
