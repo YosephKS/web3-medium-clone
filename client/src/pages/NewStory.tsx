@@ -1,7 +1,8 @@
-import { FC, useState } from "react";
-import "./NewStory.css";
+import { FC, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 import { useNotification } from "web3uikit";
+import "./NewStory.css";
 
 import {
   useMoralisFile,
@@ -13,9 +14,10 @@ const NewStory: FC = () => {
   const [text, setText] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const { saveFile } = useMoralisFile();
-  const { Moralis, account } = useMoralis();
+  const { Moralis, isInitialized, isAuthenticated, account } = useMoralis();
   const dispatch = useNotification();
   const contractProcessor = useWeb3ExecuteFunction();
+  const navigate = useNavigate();
 
   const handleSuccess = () => {
     dispatch({
@@ -54,6 +56,7 @@ const NewStory: FC = () => {
 
   const mint = async (account: string, uri: string) => {
     console.log(account);
+    setLoading(false);
     let options = {
       contractAddress: "0x19089c2F05AE286F21467d131e0679902eeffC13",
       functionName: "safeMint",
@@ -88,6 +91,8 @@ const NewStory: FC = () => {
       params: options,
       onSuccess: () => {
         handleSuccess();
+        setText("");
+        setTitle("");
       },
       onError: (error) => {
         console.log("error message", error.message);
@@ -135,46 +140,47 @@ const NewStory: FC = () => {
       // @ts-ignore
       handleError(error.message);
     }
-    setText("");
-    setTitle("");
   };
 
+  useEffect(() => {
+    if (!isInitialized || !isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, isInitialized, navigate]);
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
         <div>
-          <div className="write">
-            <form onSubmit={uploadFile} className="writeForm">
-              <div className="writeFormGroup">
-                <label htmlFor="fileInput">
-                  <i className="writeIcon fas fa-plus"></i>
-                </label>
-                <input id="fileInput" type="file" style={{ display: "none" }} />
-                <input
-                  className="writeInput"
-                  placeholder="Title"
-                  type="text"
-                  autoFocus={true}
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-              <div className="writeFormGroup">
-                <textarea
-                  className="writeInput writeText"
-                  placeholder="Tell your story..."
-                  autoFocus={true}
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                />
-              </div>
-              <button className="writeSubmit" type="submit">
-                Publish
-              </button>
-            </form>
-          </div>
+          <form onSubmit={uploadFile} className="writeForm">
+            <div className="writeFormGroup">
+              <label htmlFor="fileInput">
+                <i className="writeIcon fas fa-plus"></i>
+              </label>
+              <input id="fileInput" type="file" style={{ display: "none" }} />
+              <input
+                className="writeInput"
+                placeholder="Title"
+                type="text"
+                autoFocus={true}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="writeFormGroup">
+              <textarea
+                className="writeInput writeText"
+                placeholder="Tell your story..."
+                autoFocus={true}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              />
+            </div>
+            <button className="writeSubmit" type="submit">
+              Publish
+            </button>
+          </form>
         </div>
       )}
     </>

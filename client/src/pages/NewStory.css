@@ -1,23 +1,6 @@
-.write {
-  padding-top: 50px;
-}
-.writeNav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  justify-items: center;
-  background-color: black;
-  position: sticky;
-  z-index: -999;
-  top: 0;
-  width: 100%;
-}
-.writeLogo {
-  width: 20vw;
-  height: calc(20vw * 0.3);
-}
 .writeForm {
   position: relative;
+  margin-top: 30px;
 }
 
 .writeFormGroup {

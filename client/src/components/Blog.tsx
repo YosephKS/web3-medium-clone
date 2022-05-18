@@ -12,7 +12,7 @@ const Blog: FC = () => {
   const [text, setText] = useState("");
   const { url } = useParams();
   const navigate = useNavigate();
-  const { account } = useMoralis();
+  const { isInitialized, isAuthenticated } = useMoralis();
   const fetchBlogContent = async () => {
     const res = await axios.get(`${Url}/${url}`);
     console.log(res.data);
@@ -21,11 +21,12 @@ const Blog: FC = () => {
     setText(text);
   };
   useEffect(() => {
-    fetchBlogContent();
-    if (!account) {
+    if (!isInitialized || !isAuthenticated) {
       navigate("/");
+    } else {
+      fetchBlogContent();
     }
-  }, [account]);
+  }, [isAuthenticated, isInitialized, navigate]);
   return (
     <div className="singleBlog">
       <div className="singleBlogWrapper">

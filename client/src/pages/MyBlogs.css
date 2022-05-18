@@ -6,3 +6,6 @@
   justify-content: flex-start;
   flex-wrap: wrap;
 }
+Link {
+  text-decoration: none;
+}
