@@ -1,11 +1,10 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useMoralis } from "react-moralis";
-import { Link, useNavigate } from "react-router-dom";
-import logo from "../images/medium.png";
+import { useNavigate } from "react-router-dom";
 import "./Write.css";
-import { ConnectButton, Button, useNotification } from "web3uikit";
+import { Button, useNotification } from "web3uikit";
 const Write: FC = () => {
-  const { account } = useMoralis();
+  const { isInitialized, isAuthenticated, account } = useMoralis();
   const dispatch = useNotification();
   const navigate = useNavigate();
 
@@ -24,21 +23,29 @@ const Write: FC = () => {
       handleNoAccount();
     }
   };
+  useEffect(() => {
+    if (isInitialized && isAuthenticated) {
+      navigate("/newStory");
+    }
+  }, [isAuthenticated, isInitialized, navigate]);
   return (
-    <>
-      <div className="containerCreator" style={{ backgroundColor: "#FF4C4C" }}>
-        <div className="containerGradinet"></div>
-      </div>
+    <div className="write">
       <div className="writeContent">
-        <div className="title">Publish, grow, and earn, all in one place</div>
-        <div className="text">
-          If you have a story to tell, knowledge to share, or a perspective to
-          offer — welcome home. Sign up for free so your writing can thrive in a
-          network supported by millions of readers — not ads..
+        <div className="writeTitle">
+          Publish, grow, and earn, all in one place
         </div>
-        <Button text="Start Writing" onClick={clickHandler} />
+        <div className="text">
+          <p>
+            If you have a story to tell, knowledge to share, or a perspective to
+            offer — welcome home. Sign up for free so your writing can thrive in
+            a network supported by millions of readers — not ads..
+          </p>
+        </div>
+        <div className="writeButton">
+          <Button text="Start Writing" onClick={clickHandler} />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
