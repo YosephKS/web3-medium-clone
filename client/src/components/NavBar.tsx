@@ -16,15 +16,15 @@ const NavBar: FC = () => {
       style={{ zIndex: "10" }}
     >
       <Container>
-        <Navbar.Brand href="/">Navbar</Navbar.Brand>
+        <Navbar.Brand href="/">Logo</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav style={{ width: "100%" }} fill>
             <Nav.Link as={NavLink} to="/">
               Home
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/">
-              About
+            <Nav.Link as={NavLink} to="/read">
+              Blogs
             </Nav.Link>
             <Nav.Link as={NavLink} to="/write">
               Write

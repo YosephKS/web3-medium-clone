@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useMoralisWeb3Api, useMoralis } from "react-moralis";
-import Card from "react-bootstrap/Card";
+import { Button } from "web3uikit";
+import CardNFT from "../components/Card";
 import "./MyBlogs.css";
 
 interface Metadata {
@@ -26,6 +27,10 @@ const MyBlogs: FC = () => {
   // const { account } = useMoralis();
   const { isInitialized, isAuthenticated, account } = useMoralis();
 
+  const clickHandler = () => {
+    navigate("/newStory");
+  };
+
   const fetchNFTs = async () => {
     const options = {
       chain: "mumbai",
@@ -39,48 +44,49 @@ const MyBlogs: FC = () => {
     const metadata = polygonNFTs.result;
     setMetadata(metadata);
   };
-  console.log("account in myblogs", account);
+
   useEffect(() => {
     if (isInitialized && isAuthenticated) {
-      if (!metadata) {
-        fetchNFTs();
-      }
+      fetchNFTs();
     } else {
       navigate("/");
     }
-  }, [isAuthenticated, isInitialized, metadata, navigate]);
-  console.log(metadata?.length);
+  }, [isAuthenticated, isInitialized, metadata, navigate, account]);
   return (
     <>
       <div className="blogsNFT">
-        {metadata?.length !== 0
-          ? metadata?.map((data, i) => {
-              // @ts-ignore
-              const metadataObj = JSON.parse(data.metadata);
-              const lastSegment =
-                metadataObj && metadataObj.externalUrl.split("/").pop();
-              const tokenId = data.token_id;
-              return (
-                <Link
-                  to={`/blog/${lastSegment}/${tokenId}`}
-                  key={i}
-                  style={{ textDecoration: "none" }}
-                >
-                  <Card style={{ width: "18rem", margin: "30px" }}>
-                    <Card.Img
-                      variant="top"
-                      src={metadataObj && metadataObj.image}
-                    />
-                    <Card.Body>
-                      <Card.Title>
-                        {metadataObj && metadataObj.description}
-                      </Card.Title>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              );
-            })
-          : "No Blog Yet"}
+        {metadata?.length !== 0 ? (
+          metadata?.map((data, i) => {
+            // @ts-ignore
+            const metadataObj = JSON.parse(data.metadata);
+            const lastSegment =
+              metadataObj && metadataObj.externalUrl.split("/").pop();
+            const tokenId = data.token_id;
+            return (
+              <Link
+                to={`/blog/${lastSegment}/${tokenId}`}
+                key={i}
+                style={{ textDecoration: "none" }}
+              >
+                <CardNFT
+                  image={metadataObj && metadataObj.image}
+                  description={metadataObj && metadataObj.description}
+                />
+              </Link>
+            );
+          })
+        ) : (
+          <div
+            style={{
+              fontSize: "30px",
+              width: "100%",
+              marginLeft: "40%",
+            }}
+          >
+            <p>No Blog Yet</p>
+            <Button text="Create one" onClick={clickHandler} />
+          </div>
+        )}
       </div>
     </>
   );
