@@ -55,7 +55,6 @@ const NewStory: FC = () => {
   };
 
   const mint = async (account: string, uri: string) => {
-    console.log(account);
     setLoading(false);
     let options = {
       contractAddress: "0x19089c2F05AE286F21467d131e0679902eeffC13",
@@ -120,7 +119,6 @@ const NewStory: FC = () => {
           saveIPFS: true,
         }
       );
-      console.log("result1", result);
       try {
         // @ts-ignore
         const resultNft = await uploadNftMetada(result.ipfs());

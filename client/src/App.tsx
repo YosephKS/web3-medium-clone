@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import Home from "./pages/home";
 import Write from "./pages/Write";
+import Read from "./pages/Read";
 import NewStory from "./pages/NewStory";
 import MyBlogs from "./pages/MyBlogs";
 import Blog from "./components/Blog";
@@ -15,6 +16,7 @@ const App: FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/write" element={<Write />} />
+        <Route path="/read" element={<Read />} />
         <Route path="/newStory" element={<NewStory />} />
         <Route path="/myBlogs" element={<MyBlogs />} />
         <Route path="/blog/:url/:tokenId" element={<Blog />} />
