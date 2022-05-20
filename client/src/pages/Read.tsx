@@ -1,8 +1,9 @@
 import { FC } from "react";
 import { useState, useEffect } from "react";
-import { useMoralisWeb3Api } from "react-moralis";
+import { useMoralisWeb3Api, useMoralis } from "react-moralis";
 import { Link } from "react-router-dom";
 import CardNFT from "../components/Card";
+
 interface Metadata {
   token_address: string;
   token_id: string;
@@ -17,29 +18,75 @@ interface Metadata {
   name: string;
   symbol: string;
 }
+interface Attributes {
+  blogContent: string;
+  blogTitle: string;
+  bloggerAcc: string;
+  createdAt: object;
+  imageipfs: string;
+  nftMetadata: string;
+  update: object;
+}
+interface Result {
+  className: string;
+  id: string;
+  attributes: Attributes;
+}
 const Read: FC = () => {
-  const [metadata, setMetadata] = useState<Metadata[] | undefined>();
+  // const [metadata, setMetadata] = useState<Metadata[] | undefined>();
+  const [blogs, setBlogs] = useState<Result[]>([]);
   const Web3Api = useMoralisWeb3Api();
-  const fetchAllNfts = async () => {
-    const options = {
-      chain: "mumbai",
-      address: "0x19089c2F05AE286F21467d131e0679902eeffC13",
-    };
+  const { Moralis } = useMoralis();
+
+  // const fetchAllNfts = async () => {
+  //   const options = {
+  //     chain: "mumbai",
+  //     address: "0x19089c2F05AE286F21467d131e0679902eeffC13",
+  //   };
+  //   // @ts-ignore
+  //   const polygonNFTs = await Web3Api.token.getNFTOwners(options);
+  //   console.log("polygonNft", polygonNFTs);
+  //   setMetadata(polygonNFTs.result);
+  // };
+
+  const fetchAllBlogs = async () => {
+    const nftsBlogs = Moralis.Object.extend("Blogs");
+    const query = new Moralis.Query(nftsBlogs);
+    const result = await query.find();
+    console.log(result);
     // @ts-ignore
-    const polygonNFTs = await Web3Api.token.getNFTOwners(options);
-    console.log("polygonNft", polygonNFTs);
-    setMetadata(polygonNFTs.result);
+    setBlogs(result);
   };
+
   useEffect(() => {
-    if (!metadata) {
-      fetchAllNfts();
+    if (blogs.length === 0) {
+      fetchAllBlogs();
     }
-  }, [metadata]);
+  }, [blogs]);
 
   return (
     <>
-      {" "}
       <div className="blogsNFT">
+        {blogs.length !== 0
+          ? blogs?.map((blog, i) => {
+              const lastSegment =
+                blog && blog?.attributes.blogContent.split("/").pop();
+              return (
+                <Link
+                  to={`/blog/${lastSegment}`}
+                  key={i}
+                  style={{ textDecoration: "none" }}
+                >
+                  <CardNFT
+                    image={blog.attributes.imageipfs}
+                    description={blog.attributes.blogTitle}
+                  />
+                </Link>
+              );
+            })
+          : "No Blog Yet"}
+      </div>
+      {/* <div className="blogsNFT">
         {metadata?.length !== 0
           ? metadata?.map((data, i) => {
               // @ts-ignore
@@ -61,7 +108,7 @@ const Read: FC = () => {
               );
             })
           : "No Blog Yet"}
-      </div>
+      </div> */}
     </>
   );
 };

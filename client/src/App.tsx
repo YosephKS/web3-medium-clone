@@ -19,7 +19,7 @@ const App: FC = () => {
         <Route path="/read" element={<Read />} />
         <Route path="/newStory" element={<NewStory />} />
         <Route path="/myBlogs" element={<MyBlogs />} />
-        <Route path="/blog/:url/:tokenId" element={<Blog />} />
+        <Route path="/blog/:url" element={<Blog />} />
       </Routes>
     </div>
   );
