@@ -39,8 +39,6 @@ const MyBlogs: FC = () => {
     };
     // @ts-ignore
     const polygonNFTs = await Web3Api.account.getNFTsForContract(options);
-    console.log("polygonNft", polygonNFTs);
-
     const metadata = polygonNFTs.result;
     setMetadata(metadata);
   };

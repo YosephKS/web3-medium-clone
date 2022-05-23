@@ -26,7 +26,6 @@ const NewStory: FC = () => {
   const save = async () => {
     const Blogs = Moralis.Object.extend("Blogs");
     const newBlog = new Blogs();
-    console.log("title", title);
     newBlog.set("blogTitle", title);
     newBlog.set("bloggerAcc", account);
     // for now I am using moralis log image as nft image.
@@ -35,12 +34,10 @@ const NewStory: FC = () => {
       "https://ipfs.moralis.io:2053/ipfs/QmWEsG4ayh75BMk2H1CowAdALPjsi3fD7CSZ6qxNM1yNnz/image/moralis.png"
     );
     if (blog && nft) {
-      console.log("inside blog & nft", blog, nft);
       // @ts-ignore
       newBlog.set("blogContent", blog);
       // @ts-ignore
       newBlog.set("nftMetadata", nft);
-      console.log("reached here");
       //window.location.reload();
     }
     await newBlog.save();
@@ -125,7 +122,6 @@ const NewStory: FC = () => {
         // setTitle("");
       },
       onError: (error) => {
-        console.log("error message", error.message);
         // @ts-ignore
         handleError(error.message);
       },
@@ -134,9 +130,7 @@ const NewStory: FC = () => {
   //upload blog content and nft metadata to ipfs and mint
   const uploadFile = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("isAuthenticated outside if condition", isAuthenticated);
     if (isAuthenticated) {
-      console.log("isAuthenticated inside if condition", isAuthenticated);
       // @ts-ignore
       const textArray = text.split();
       const metadata = {
@@ -164,13 +158,11 @@ const NewStory: FC = () => {
           //setVisible(true);
         } catch (error) {
           setLoading(false);
-          console.log(error);
           // @ts-ignore
           handleError(error.message);
         }
       } catch (error) {
         setLoading(false);
-        console.log(error);
         // @ts-ignore
         handleError(error.message);
       }
@@ -182,7 +174,6 @@ const NewStory: FC = () => {
 
   useEffect(() => {
     if (!isInitialized || !isAuthenticated) {
-      console.log(isInitialized, isAuthenticated);
       navigate("/");
     }
   }, [isAuthenticated, isInitialized, navigate]);

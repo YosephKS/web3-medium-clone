@@ -31,7 +31,6 @@ const Read: FC = () => {
     };
     // @ts-ignore
     const polygonNFTs = await Web3Api.token.getNFTOwners(options);
-    console.log("polygonNft", polygonNFTs);
     setMetadata(polygonNFTs.result);
   };
 

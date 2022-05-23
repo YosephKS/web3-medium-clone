@@ -10,7 +10,6 @@ const Blog: FC = () => {
   const { url } = useParams();
   const fetchBlogContent = async () => {
     const res = await axios.get(`${Url}/${url}`);
-    console.log(res.data);
     setTitle(res.data.title);
     const text = res.data.text.toString();
     setText(text);
