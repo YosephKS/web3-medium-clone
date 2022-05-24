@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Loading from "../components/Loading";
+// import Loading from "../components/Loading";
 import { useNotification } from "web3uikit";
 import "./NewStory.css";
 
@@ -186,7 +186,7 @@ const NewStory: FC = () => {
   return (
     <>
       {loading ? (
-        <Loading />
+        "Loading...."
       ) : (
         <div>
           <form onSubmit={uploadFile} className="writeForm">
