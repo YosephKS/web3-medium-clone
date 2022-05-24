@@ -73,9 +73,9 @@ const Nav: FC = () => {
               display: { xs: "none", md: "flex", fontFamily: "monospace" },
             }}
           >
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <Button
-                key={page}
+                key={index}
                 sx={{
                   my: 2,
                   color: "white",

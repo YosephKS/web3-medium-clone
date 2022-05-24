@@ -1,22 +1,25 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.css";
+import { useMoralis } from "react-moralis";
 import Home from "./pages/home";
 import Write from "./pages/Write";
 import Read from "./pages/Read";
 import NewStory from "./pages/NewStory";
 import MyBlogs from "./pages/MyBlogs";
 import Blog from "./components/Blog";
-// import NavBar from "./components/NavBar";
 import Nav from "./components/Nav";
+import Sidebar from "./components/Sidebar";
+import HomeAuth from "./pages/HomeAuth";
+//import "/App.css";
 
 const App: FC = () => {
+  const { isAuthenticated } = useMoralis();
+  useEffect(() => {}, [isAuthenticated]);
   return (
-    <div>
-      {/* <NavBar /> */}
-      <Nav />
+    <div style={{ display: isAuthenticated ? "flex" : "block" }}>
+      <div>{isAuthenticated ? <Sidebar /> : <Nav />}</div>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={isAuthenticated ? <HomeAuth /> : <Home />} />
         <Route path="/write" element={<Write />} />
         <Route path="/read" element={<Read />} />
         <Route path="/newStory" element={<NewStory />} />
