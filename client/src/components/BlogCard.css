@@ -1,0 +1,21 @@
+.blog {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  border-top: 1px solid rgb(63, 63, 63);
+  align-items: center;
+}
+.blog_leftSide {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.blog_image {
+  width: 200px;
+}
+.blogger_name {
+  padding: 10px;
+}
+.blogger_date {
+  font-weight: 200;
+}

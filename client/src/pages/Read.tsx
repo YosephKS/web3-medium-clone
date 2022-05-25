@@ -52,7 +52,7 @@ const Read: FC = () => {
               const tokenId = data.token_id;
               return (
                 <Link
-                  to={`/blog/${lastSegment}/${tokenId}`}
+                  to={`/blog/${lastSegment}`}
                   key={i}
                   style={{ textDecoration: "none" }}
                 >

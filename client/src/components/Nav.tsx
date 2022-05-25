@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMoralis } from "react-moralis";
+
 import {
   AppBar,
   Box,
@@ -9,22 +9,25 @@ import {
   Container,
   Button,
 } from "@mui/material";
-import { ConnectButton } from "web3uikit";
+import { useMoralis } from "react-moralis";
 
-const pages = ["Home", "Blogs", "Write"];
+const pages = ["Home", "Write", "Memeber", "AboutUs"];
 
 const Nav: FC = () => {
-  const { isAuthenticated } = useMoralis();
+  const { authenticate, isAuthenticated } = useMoralis();
   const navigate = useNavigate();
   const clickHandler = (page: string) => {
     if (page === "Home") {
       navigate("/");
-    } else if (page === "Blogs") {
-      navigate("/read");
     } else if (page === "Write") {
       navigate("/write");
-    } else if (page === "myBlogs") {
-      navigate("/myBlogs");
+    }
+  };
+  const login = async () => {
+    if (!isAuthenticated) {
+      await authenticate({ signingMessage: "Log in using Moralis" }).catch(
+        function (error) {}
+      );
     }
   };
   return (
@@ -86,22 +89,9 @@ const Nav: FC = () => {
                 {page}
               </Button>
             ))}
-            {isAuthenticated ? (
-              <Button
-                key="MyBlogs"
-                sx={{
-                  my: 2,
-                  color: "white",
-                  display: "block",
-                }}
-                onClick={() => clickHandler("myBlogs")}
-              >
-                MyBlogs
-              </Button>
-            ) : null}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <ConnectButton />
+            <Button onClick={login}>Connect Wallet</Button>
           </Box>
         </Toolbar>
       </Container>
