@@ -4,10 +4,8 @@ import { Button } from "web3uikit";
 import "./home.css";
 
 const Home: FC = () => {
-  const navigate = useNavigate();
-  const clickHandler = () => {
-    navigate("/read");
-  };
+  // const navigate = useNavigate();
+  const clickHandler = () => {};
   return (
     <div className="home">
       <div className="homeContent">
