@@ -1,6 +1,6 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import Loading from "../components/Loading";
+import Loading from "../components/Loading";
 import { useNotification } from "web3uikit";
 import "./NewStory.css";
 
@@ -13,37 +13,12 @@ const NewStory: FC = () => {
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const [blog, setBlog] = useState<string>("");
-  const [nft, setNft] = useState<string>("");
-  const [success, setSuccess] = useState<boolean>(false);
   const { saveFile } = useMoralisFile();
   const { Moralis, isInitialized, isAuthenticated, account, authenticate } =
     useMoralis();
   const dispatch = useNotification();
   const contractProcessor = useWeb3ExecuteFunction();
-  const navigate = useNavigate();
 
-  const save = async () => {
-    const Blogs = Moralis.Object.extend("Blogs");
-    const newBlog = new Blogs();
-    newBlog.set("blogTitle", title);
-    newBlog.set("bloggerAcc", account);
-    // for now I am using moralis log image as nft image.
-    newBlog.set(
-      "imageipfs",
-      "https://ipfs.moralis.io:2053/ipfs/QmWEsG4ayh75BMk2H1CowAdALPjsi3fD7CSZ6qxNM1yNnz/image/moralis.png"
-    );
-    if (blog && nft) {
-      // @ts-ignore
-      newBlog.set("blogContent", blog);
-      // @ts-ignore
-      newBlog.set("nftMetadata", nft);
-      //window.location.reload();
-    }
-    await newBlog.save();
-    setText("");
-    setTitle("");
-  };
   const handleSuccess = () => {
     dispatch({
       type: "success",
@@ -75,8 +50,6 @@ const NewStory: FC = () => {
         saveIPFS: true,
       }
     );
-    // @ts-ignore
-    setNft(resultNft.ipfs());
     return resultNft;
   };
 
@@ -116,10 +89,8 @@ const NewStory: FC = () => {
       params: options,
       onSuccess: () => {
         handleSuccess();
-        //save();
-        setSuccess(true);
-        // setText("");
-        // setTitle("");
+        setText("");
+        setTitle("");
       },
       onError: (error) => {
         // @ts-ignore
@@ -127,66 +98,52 @@ const NewStory: FC = () => {
       },
     });
   };
+
   //upload blog content and nft metadata to ipfs and mint
   const uploadFile = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (isAuthenticated) {
-      // @ts-ignore
-      const textArray = text.split();
-      const metadata = {
-        title,
-        text: textArray,
-      };
-      try {
-        setLoading(true);
-        const result = await saveFile(
-          "myblog.json",
-          { base64: btoa(JSON.stringify(metadata)) },
-          {
-            type: "base64",
-            saveIPFS: true,
-          }
-        );
-        // @ts-ignore
-        setBlog(result.ipfs());
-        try {
-          // @ts-ignore
-          const resultNft = await uploadNftMetada(result.ipfs());
-          // @ts-ignore
-          await mint(account, resultNft.ipfs());
-          setLoading(false);
-          //setVisible(true);
-        } catch (error) {
-          setLoading(false);
-          // @ts-ignore
-          handleError(error.message);
+    if (!isAuthenticated) {
+      Moralis.authenticate();
+    }
+    // @ts-ignore
+    const textArray = text.split();
+    const metadata = {
+      title,
+      text: textArray,
+    };
+    try {
+      setLoading(true);
+      const result = await saveFile(
+        "myblog.json",
+        { base64: btoa(JSON.stringify(metadata)) },
+        {
+          type: "base64",
+          saveIPFS: true,
         }
+      );
+      try {
+        // @ts-ignore
+        const resultNft = await uploadNftMetada(result.ipfs());
+        // @ts-ignore
+        await mint(account, resultNft.ipfs());
+        setLoading(false);
+        //setVisible(true);
       } catch (error) {
         setLoading(false);
         // @ts-ignore
         handleError(error.message);
       }
-    } else {
-      await authenticate();
-      uploadFile(event);
+    } catch (error) {
+      setLoading(false);
+      // @ts-ignore
+      handleError(error.message);
     }
   };
 
-  useEffect(() => {
-    if (!isInitialized || !isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, isInitialized, navigate]);
-
-  useEffect(() => {
-    if (success) {
-      save();
-    }
-  }, [blog, nft, success]);
   return (
     <>
       {loading ? (
-        "Loading...."
+        <Loading open={loading} />
       ) : (
         <div>
           <form onSubmit={uploadFile} className="writeForm">

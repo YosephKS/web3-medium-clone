@@ -1,12 +1,18 @@
-//  import Spinner from "react-bootstrap/Spinner";
-// import "./Loading.css";
+import { Backdrop, CircularProgress } from "@mui/material";
+import { FC } from "react";
 
-const Loading = () => {
+interface ChildProps {
+  open: boolean;
+}
+const Loading: FC<ChildProps> = ({ open }) => {
   return (
     <div className="loading_spinner">
-      {/* <Spinner animation="border" role="status">
-        <span className="sr-only">Uploading...</span>
-      </Spinner> */}
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 };
