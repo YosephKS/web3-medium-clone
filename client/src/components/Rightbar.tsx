@@ -25,13 +25,11 @@ const Rightbar: FC = () => {
 
         <div className="trends">
           What we are reading Today
-          {trends.map((e) => {
+          {trends.map((e, i) => {
             return (
-              <>
-                <div className="trend">
-                  <div className="trendText">{e.text}</div>
-                </div>
-              </>
+              <div key={i} className="trend">
+                <div className="trendText">{e.text}</div>
+              </div>
             );
           })}
         </div>

@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useMoralisWeb3Api, useMoralis } from "react-moralis";
+import axios from "axios";
 import { Button } from "web3uikit";
-import CardNFT from "../components/Card";
+import BlogCard from "../components/BlogCard";
 import "./MyBlogs.css";
 
 interface Metadata {
@@ -21,7 +22,8 @@ interface Metadata {
 }
 
 const MyBlogs: FC = () => {
-  const [metadata, setMetadata] = useState<Metadata[] | undefined>();
+  const [blogs, setBlogs] = useState<(object | undefined)[] | undefined>();
+  const [blogsContent, setBlogsContent] = useState<object[]>();
   const navigate = useNavigate();
   const Web3Api = useMoralisWeb3Api();
   const { isInitialized, isAuthenticated, account } = useMoralis();
@@ -39,8 +41,36 @@ const MyBlogs: FC = () => {
     };
     // @ts-ignore
     const polygonNFTs = await Web3Api.account.getNFTsForContract(options);
-    const metadata = polygonNFTs.result;
-    setMetadata(metadata);
+    const tokenUri = polygonNFTs?.result?.map((data: Metadata) => {
+      const { metadata, owner_of } = data;
+
+      if (metadata) {
+        const metadataObj = JSON.parse(metadata);
+        const { externalUrl } = metadataObj;
+        return { externalUrl, owner_of };
+      } else {
+        return undefined;
+      }
+    });
+    setBlogs(tokenUri);
+  };
+
+  const fextchBlogsContent = async () => {
+    const limit10 = blogs?.slice(0, 5);
+    let contentBlog: object[] = [];
+    if (limit10) {
+      limit10.map(async (blog) => {
+        if (blog) {
+          // @ts-ignore
+          const { externalUrl, owner_of } = blog;
+          const res = await axios.get(externalUrl);
+          const text: string = res.data.text.toString();
+          const title: string = res.data.title;
+          contentBlog.push({ title, text, owner_of, externalUrl });
+        }
+      });
+    }
+    setBlogsContent(contentBlog);
   };
 
   useEffect(() => {
@@ -51,27 +81,27 @@ const MyBlogs: FC = () => {
     }
   }, [isAuthenticated, isInitialized, navigate, account]);
 
+  useEffect(() => {
+    if (blogs && blogs.length > 0 && !blogsContent) {
+      fextchBlogsContent();
+    }
+  }, [blogs, blogsContent]);
+
   return (
     <>
-      <div className="blogsNFT">
-        {metadata?.length !== 0 ? (
-          metadata?.map((data, i) => {
+      <div>
+        {blogsContent && blogsContent?.length > 0 ? (
+          blogsContent?.map((blog, i) => {
             // @ts-ignore
-            const metadataObj = JSON.parse(data.metadata);
-            const lastSegment =
-              metadataObj && metadataObj.externalUrl.split("/").pop();
-
+            const { title, text, owner_of, externalUrl } = blog;
             return (
-              <Link
-                to={`/blog/${lastSegment}`}
+              <BlogCard
                 key={i}
-                style={{ textDecoration: "none" }}
-              >
-                <CardNFT
-                  image={metadataObj && metadataObj.image}
-                  description={metadataObj && metadataObj.description}
-                />
-              </Link>
+                title={title}
+                text={text}
+                ownerOf={owner_of}
+                externalUrl={externalUrl}
+              />
             );
           })
         ) : (

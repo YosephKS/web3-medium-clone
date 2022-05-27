@@ -1,7 +1,7 @@
 .homeAuth_container {
   display: flex;
   flex-direction: column;
-  width: auto;
+  width: 100%;
   align-items: center;
 }
 .homeAuth_blogs {

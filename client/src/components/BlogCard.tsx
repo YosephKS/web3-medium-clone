@@ -1,30 +1,44 @@
 import { FC } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "./BlogCard.css";
-const BlogCard: FC = () => {
+interface ChildProps {
+  text: string;
+  title: string;
+  ownerOf: string;
+  externalUrl: string;
+}
+const BlogCard: FC<ChildProps> = ({ text, title, ownerOf, externalUrl }) => {
+  const length = 100;
+  const trimmedString = text.length > 100 ? text.substring(0, length) : text;
+  const account = `${ownerOf.slice(0, 4)}...${ownerOf.slice(38)}`;
+  const navigate = useNavigate();
+  const clickHandler = () => {
+    const lastSegment = externalUrl.split("/").pop();
+    navigate(`/blog/${lastSegment}`);
+  };
   return (
-    <div className="blog">
+    <div className="blog" onClick={clickHandler}>
       <div className="blog_leftSide">
         <div className="blogger">
-          <img className="blogger_photo" src="" alt="" />
-          <span className="blogger_name">Nicky</span>
+          <span className="blogger_name">{account}</span>
           <span className="blogger_date">Mar 21</span>
         </div>
         <div className="blog_title">
-          <h3>Will LUNA Price Recover Again?</h3>
+          <h3>{title}</h3>
         </div>
         <div className="blog_content">
-          <p>
-            In the past couple of days, the crypto space witnessed a nightmare
-            of a token being in the top 10
-          </p>
+          <p>{trimmedString}</p>
         </div>
       </div>
       <div className="blog_rightSide">
-        <img
-          className="blog_image"
-          src="https://ipfs.moralis.io:2053/ipfs/QmWEsG4ayh75BMk2H1CowAdALPjsi3fD7CSZ6qxNM1yNnz/image/moralis.png"
-          alt=""
-        />
+        <div>
+          <img
+            className="blog_image"
+            src="https://ipfs.moralis.io:2053/ipfs/QmWEsG4ayh75BMk2H1CowAdALPjsi3fD7CSZ6qxNM1yNnz/image/moralis.png"
+            alt=""
+          />
+        </div>
       </div>
     </div>
   );

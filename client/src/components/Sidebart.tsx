@@ -30,7 +30,7 @@ const Sidebar = () => {
             </div>
           </Link>
 
-          <Link to="/write" className="link">
+          <Link to="/newStory" className="link">
             <div className="menuItems">
               <RateReviewIcon />
             </div>

@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import { useMoralis } from "react-moralis";
 import Home from "./pages/home";
 import Write from "./pages/Write";
-import Read from "./pages/Read";
 import NewStory from "./pages/NewStory";
 import MyBlogs from "./pages/MyBlogs";
 import Blog from "./components/Blog";
