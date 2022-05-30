@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 import { useNotification } from "web3uikit";
@@ -14,8 +14,14 @@ const NewStory: FC = () => {
   const [text, setText] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const { saveFile } = useMoralisFile();
-  const { Moralis, isInitialized, isAuthenticated, account, authenticate } =
-    useMoralis();
+  const {
+    Moralis,
+    isInitialized,
+    isAuthenticated,
+    account,
+    isWeb3Enabled,
+    enableWeb3,
+  } = useMoralis();
   const dispatch = useNotification();
   const contractProcessor = useWeb3ExecuteFunction();
 
@@ -56,7 +62,8 @@ const NewStory: FC = () => {
   const mint = async (account: string, uri: string) => {
     setLoading(false);
     let options = {
-      contractAddress: "0x19089c2F05AE286F21467d131e0679902eeffC13",
+      //old contract "0x19089c2F05AE286F21467d131e0679902eeffC13"
+      contractAddress: "0x2dE830c0D85e9980989E31A5f589314908014173",
       functionName: "safeMint",
       abi: [
         {
@@ -139,7 +146,11 @@ const NewStory: FC = () => {
       handleError(error.message);
     }
   };
-
+  useEffect(() => {
+    if (isInitialized && isAuthenticated && !isWeb3Enabled) {
+      enableWeb3();
+    }
+  }, [isInitialized, isAuthenticated, isWeb3Enabled, enableWeb3]);
   return (
     <>
       {loading ? (

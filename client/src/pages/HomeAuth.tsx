@@ -1,61 +1,44 @@
 import { FC, useState, useEffect } from "react";
 import "./HomeAuth.css";
 import BlogCard from "../components/BlogCard";
-import { useMoralisWeb3Api } from "react-moralis";
+import { useMoralis, useMoralisCloudFunction } from "react-moralis";
 import axios from "axios";
-interface Metadata {
-  token_address: string;
-  token_id: string;
-  contract_type: string;
-  owner_of: string;
-  block_number: string;
-  block_number_minted: string;
-  token_uri?: string | undefined;
-  metadata?: string | undefined;
-  synced_at?: string | undefined;
-  amount?: string | undefined;
-  name: string;
-  symbol: string;
+import console from "console";
+
+interface MetaData {
+  owner: string;
+  image: string;
+  externalUrl: string;
+  description: string;
 }
 
 const HomeAuth: FC = () => {
-  const [blogs, setBlogs] = useState<(object | undefined)[] | undefined>();
   const [blogsContent, setBlogsContent] = useState<object[]>();
-  const Web3Api = useMoralisWeb3Api();
-  //fetching from web3Api
-  const fetchAllNfts = async () => {
-    const options = {
-      chain: "mumbai",
-      address: "0x19089c2F05AE286F21467d131e0679902eeffC13",
-    };
-    // @ts-ignore
-    const polygonNFTs = await Web3Api.token.getNFTOwners(options);
-    const tokenUri = polygonNFTs?.result?.map((data: Metadata) => {
-      const { metadata, owner_of } = data;
+  const [blogs, setBlogs] = useState<MetaData[]>();
 
-      if (metadata) {
-        const metadataObj = JSON.parse(metadata);
-        const { externalUrl } = metadataObj;
-        return { externalUrl, owner_of };
-      } else {
-        return undefined;
-      }
-    });
-    setBlogs(tokenUri);
+  const { isInitialized, isAuthenticated } = useMoralis();
+  // fetch from cloud function;
+  const { fetch } = useMoralisCloudFunction("getMetaData", {
+    autoFetch: false,
+  });
+  const cloudCall = async () => {
+    const data = await fetch();
+    console.log("data from cloud", data);
+    // @ts-ignore
+    setBlogs(data);
   };
 
   const fextchBlogsContent = async () => {
-    const limit10 = blogs?.slice(0, 5);
     let contentBlog: object[] = [];
-    if (limit10) {
-      limit10.map(async (blog) => {
+    if (blogs) {
+      blogs.map(async (blog) => {
         if (blog) {
           // @ts-ignore
-          const { externalUrl, owner_of } = blog;
+          const { externalUrl, owner, image } = blog;
           const res = await axios.get(externalUrl);
           const text: string = res.data.text.toString();
           const title: string = res.data.title;
-          contentBlog.push({ title, text, owner_of, externalUrl });
+          contentBlog.push({ title, text, owner, externalUrl, image });
         }
       });
     }
@@ -63,10 +46,10 @@ const HomeAuth: FC = () => {
   };
 
   useEffect(() => {
-    if (!blogs) {
-      fetchAllNfts();
+    if (isAuthenticated && isInitialized && !blogs) {
+      cloudCall();
     }
-  }, [blogs]);
+  }, [isAuthenticated, isInitialized, fetch]);
 
   useEffect(() => {
     if (blogs && !blogsContent) {
@@ -81,14 +64,16 @@ const HomeAuth: FC = () => {
         {blogsContent &&
           blogsContent.map((blog, i) => {
             // @ts-ignore
-            const { title, text, owner_of, externalUrl } = blog;
+            const { title, text, owner, externalUrl, image } = blog;
+            console.log(blog);
             return (
               <BlogCard
                 key={i}
                 title={title}
                 text={text}
-                ownerOf={owner_of}
+                ownerOf={owner}
                 externalUrl={externalUrl}
+                image={image}
               />
             );
           })}

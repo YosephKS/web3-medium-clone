@@ -7,8 +7,15 @@ interface ChildProps {
   title: string;
   ownerOf: string;
   externalUrl: string;
+  image: string;
 }
-const BlogCard: FC<ChildProps> = ({ text, title, ownerOf, externalUrl }) => {
+const BlogCard: FC<ChildProps> = ({
+  text,
+  title,
+  ownerOf,
+  externalUrl,
+  image,
+}) => {
   const length = 100;
   const trimmedString = text.length > 100 ? text.substring(0, length) : text;
   const account = `${ownerOf.slice(0, 4)}...${ownerOf.slice(38)}`;
@@ -33,11 +40,7 @@ const BlogCard: FC<ChildProps> = ({ text, title, ownerOf, externalUrl }) => {
       </div>
       <div className="blog_rightSide">
         <div>
-          <img
-            className="blog_image"
-            src="https://ipfs.moralis.io:2053/ipfs/QmWEsG4ayh75BMk2H1CowAdALPjsi3fD7CSZ6qxNM1yNnz/image/moralis.png"
-            alt=""
-          />
+          <img className="blog_image" src={image} alt="" />
         </div>
       </div>
     </div>
