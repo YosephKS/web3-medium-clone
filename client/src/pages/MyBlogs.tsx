@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useMoralis, useMoralisCloudFunction } from "react-moralis";
 import axios from "axios";
 import { Button } from "web3uikit";
+import { Typography, Box, Tabs, Tab } from "@mui/material";
 import BlogCard from "../components/BlogCard";
 import "./MyBlogs.css";
 import console from "console";
@@ -67,23 +68,42 @@ const MyBlogs: FC = () => {
   }, [blogs, blogsContent]);
 
   return (
-    <>
+    <div className="myBlogs_container">
+      <div className="myBlogs_header">
+        <div>
+          <Typography variant="h4" component="div">
+            Your Stroies
+          </Typography>
+          <div>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Tabs aria-label="basic tabs example">
+                <Tab label="Draft" />
+                <Tab label="Published" />
+              </Tabs>
+            </Box>
+          </div>
+        </div>
+      </div>
       <div>
         {blogsContent && blogsContent?.length > 0 ? (
-          blogsContent?.map((blog, i) => {
-            // @ts-ignore
-            const { title, text, owner, externalUrl, image } = blog;
-            return (
-              <BlogCard
-                key={i}
-                title={title}
-                text={text}
-                ownerOf={owner}
-                externalUrl={externalUrl}
-                image={image}
-              />
-            );
-          })
+          <div className="myBlogs_list">
+            {blogsContent?.map((blog, i) => {
+              // @ts-ignore
+              const { title, text, owner, externalUrl, image } = blog;
+              return (
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <BlogCard
+                    key={i}
+                    title={title}
+                    text={text}
+                    ownerOf={owner}
+                    externalUrl={externalUrl}
+                    image={image}
+                  />
+                </Box>
+              );
+            })}
+          </div>
         ) : (
           <div
             style={{
@@ -97,7 +117,7 @@ const MyBlogs: FC = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

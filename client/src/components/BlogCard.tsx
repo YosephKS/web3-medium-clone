@@ -1,5 +1,7 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import { Typography, Avatar } from "@mui/material";
+import logo from "../images/Moralis.png";
 
 import "./BlogCard.css";
 interface ChildProps {
@@ -16,7 +18,7 @@ const BlogCard: FC<ChildProps> = ({
   externalUrl,
   image,
 }) => {
-  const length = 100;
+  const length = 200;
   const trimmedString = text.length > 100 ? text.substring(0, length) : text;
   const account = `${ownerOf.slice(0, 4)}...${ownerOf.slice(38)}`;
   const navigate = useNavigate();
@@ -28,14 +30,45 @@ const BlogCard: FC<ChildProps> = ({
     <div className="blog" onClick={clickHandler}>
       <div className="blog_leftSide">
         <div className="blogger">
-          <span className="blogger_name">{account}</span>
-          <span className="blogger_date">Mar 21</span>
+          <Avatar sx={{ width: 22, height: 22, paddingRight: 1 }} src={logo} />
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            component="div"
+            sx={{ fontSize: 15 }}
+          >
+            {account}
+            <span className="blogger_date" style={{ padding: 10 }}>
+              March 21
+            </span>
+          </Typography>
         </div>
         <div className="blog_title">
-          <h3>{title}</h3>
+          <Typography
+            component="div"
+            variant="h5"
+            sx={{ fontWeight: "bloder", paddingBottom: 1, paddingTop: 2 }}
+          >
+            {title}
+          </Typography>
         </div>
         <div className="blog_content">
-          <p>{trimmedString}</p>
+          <Typography variant="body1" color="text.secondary" component="div">
+            {trimmedString}...
+          </Typography>
+        </div>
+        <div className="blog_footer">
+          <Typography
+            variant="subtitle2"
+            color="text.secondary"
+            component="div"
+            sx={{ paddingBottom: 3, paddingTop: 3 }}
+          >
+            3min read
+            <span className="blogger_date" style={{ padding: 10 }}>
+              Selected for you
+            </span>
+          </Typography>
         </div>
       </div>
       <div className="blog_rightSide">

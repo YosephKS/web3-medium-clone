@@ -7,10 +7,9 @@ import NewStory from "./pages/NewStory";
 import MyBlogs from "./pages/MyBlogs";
 import Blog from "./components/Blog";
 import Nav from "./components/Nav";
-import Sidebar from "./components/Sidebart";
 import HomeAuth from "./pages/HomeAuth";
-import Rightbar from "./components/Rightbar";
 import "./App.css";
+import Layout from "./Layout/Layout";
 
 const App: FC = () => {
   const { isInitialized, isAuthenticated, isWeb3Enabled, enableWeb3 } =
@@ -24,11 +23,8 @@ const App: FC = () => {
   return (
     <>
       {isAuthenticated ? (
-        <div className="App">
-          <div className="sideBar">
-            <Sidebar />
-          </div>
-          <div className="mainWindow">
+        <div>
+          <Layout>
             <Routes>
               <Route path="/" element={<HomeAuth />} />
               <Route path="/write" element={<Write />} />
@@ -36,10 +32,7 @@ const App: FC = () => {
               <Route path="/myBlogs" element={<MyBlogs />} />
               <Route path="/blog/:url" element={<Blog />} />
             </Routes>
-          </div>
-          <div className="rightBar">
-            <Rightbar />
-          </div>
+          </Layout>
         </div>
       ) : (
         <div>

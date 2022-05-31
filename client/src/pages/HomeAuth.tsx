@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from "react";
 import "./HomeAuth.css";
 import BlogCard from "../components/BlogCard";
 import { useMoralis, useMoralisCloudFunction } from "react-moralis";
+import { Tab, Tabs, Box } from "@mui/material";
 import axios from "axios";
 import console from "console";
 
@@ -59,7 +60,14 @@ const HomeAuth: FC = () => {
 
   return (
     <div className="homeAuth_container">
-      <div className="homeAuth_header">recommended</div>
+      <div className="homeAuth_header">
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs>
+            <Tab label="Following" />
+            <Tab label="Recommened" />
+          </Tabs>
+        </Box>
+      </div>
       <div className="homeAuth_blogs">
         {blogsContent &&
           blogsContent.map((blog, i) => {
@@ -67,14 +75,16 @@ const HomeAuth: FC = () => {
             const { title, text, owner, externalUrl, image } = blog;
             console.log(blog);
             return (
-              <BlogCard
-                key={i}
-                title={title}
-                text={text}
-                ownerOf={owner}
-                externalUrl={externalUrl}
-                image={image}
-              />
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <BlogCard
+                  key={i}
+                  title={title}
+                  text={text}
+                  ownerOf={owner}
+                  externalUrl={externalUrl}
+                  image={image}
+                />
+              </Box>
             );
           })}
       </div>

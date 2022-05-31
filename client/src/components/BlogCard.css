@@ -2,11 +2,9 @@
   display: flex;
   flex-direction: row;
   margin-top: 20px;
-  border-top: 1px solid rgb(63, 63, 63);
   align-items: center;
   width: 100%;
   cursor: pointer;
-  box-shadow: 2px 2px #f6f5f5;
 }
 .blog_leftSide {
   display: flex;
@@ -17,13 +15,13 @@
 .blog_rightSide {
   width: 30%;
 }
+.blogger {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
 .blog_image {
   width: 150px;
-  padding: auto;
-}
-.blogger_name {
-  padding: 10px;
-}
-.blogger_date {
-  font-weight: 200;
+  aspect-ratio: auto 100 / 100;
+  height: 150px;
 }

@@ -1,40 +1,96 @@
-import { FC } from "react";
-import "./Rightbar.css";
+import { FC, Fragment } from "react";
+import Drawer from "@mui/material/Drawer";
 import { Input } from "web3uikit";
+import { makeStyles } from "@mui/styles";
+import {
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  Typography,
+} from "@mui/material";
+import logo from "../images/Moralis.png";
+const useStyles = makeStyles({
+  drawer: {
+    width: "100px",
+  },
+  search: {
+    marginTop: "40px",
+    padding: "20px",
+  },
+  trends: {
+    fontWeight: "bold",
+    marginLeft: "50px",
+    alignItems: "center",
+  },
+});
 
 const Rightbar: FC = () => {
+  const classes = useStyles();
   const trends = [
     {
-      text: "Real Performance Paradox",
+      title: "Real Performance Paradox",
+      name: "Alex Ivan",
     },
     {
-      text: "The Email Scam That Nearly Worked On Me",
+      title: "The Email Scam That Nearly Worked On Me",
+      name: "Lulia Abel",
     },
     {
-      text: "The forgotten benefits of “low tech” user interfaces",
-    },
-    {
-      text: "Become a Web3 Developer with just simple JS...",
+      title: "The forgotten benefits of “low tech” user interfaces",
+      name: "Makda Aaron",
     },
   ];
-
   return (
-    <>
-      <div className="rightbarContent">
+    <Drawer
+      variant="permanent"
+      anchor="right"
+      open={true}
+      sx={{ display: { xs: "none", sm: "block" } }}
+    >
+      <div className={classes.search}>
         <Input label="Search" name="Search" prefixIcon="search"></Input>
+      </div>
 
-        <div className="trends">
-          What we are reading Today
+      <div className={classes.trends}>
+        What we are reading Today
+        <List
+          sx={{
+            width: "100%",
+            maxWidth: 300,
+            bgcolor: "background.paper",
+          }}
+        >
           {trends.map((e, i) => {
             return (
-              <div key={i} className="trend">
-                <div className="trendText">{e.text}</div>
-              </div>
+              <ListItem alignItems="flex-start">
+                <ListItemAvatar>
+                  <Avatar sx={{ width: 20, height: 20 }} src={logo} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={e.name}
+                  secondary={
+                    <Fragment>
+                      {
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                          sx={{ fontWeight: "bold" }}
+                        >
+                          {e.title}
+                        </Typography>
+                      }
+                    </Fragment>
+                  }
+                />
+              </ListItem>
             );
           })}
-        </div>
+        </List>
       </div>
-    </>
+    </Drawer>
   );
 };
 

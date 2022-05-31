@@ -157,6 +157,11 @@ const NewStory: FC = () => {
         <Loading open={loading} />
       ) : (
         <div>
+          <div>
+            <button className="writeSubmit" type="submit">
+              Publish
+            </button>
+          </div>
           <form onSubmit={uploadFile} className="writeForm">
             <div className="writeFormGroup">
               <label htmlFor="fileInput">
@@ -181,9 +186,6 @@ const NewStory: FC = () => {
                 onChange={(e) => setText(e.target.value)}
               />
             </div>
-            <button className="writeSubmit" type="submit">
-              Publish
-            </button>
           </form>
         </div>
       )}

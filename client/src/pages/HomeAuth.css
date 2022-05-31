@@ -1,8 +1,6 @@
 .homeAuth_container {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  align-items: center;
 }
 .homeAuth_blogs {
   display: flex;
@@ -11,4 +9,5 @@
 }
 .homeAuth_header {
   margin-top: 70px;
+  margin-bottom: 10px;
 }

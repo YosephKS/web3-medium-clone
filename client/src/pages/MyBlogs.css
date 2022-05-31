@@ -1,11 +1,12 @@
-.blogsNFT {
+.myBlogs_container {
+  display: flex;
+  flex-direction: column;
+}
+.myBlogs_header {
+  margin-top: 40px;
+}
+.myBlogs_list {
   display: flex;
   align-items: center;
-  margin-top: 100px;
-  margin-left: 30px;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-Link {
-  text-decoration: none;
+  flex-direction: column;
 }
