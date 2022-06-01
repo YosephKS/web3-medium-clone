@@ -22,7 +22,7 @@ contract NFT is ERC721, ERC721URIStorage, Ownable {
     ) ERC721(name_, symbol_) {
         fees = fees_;
     }
-
+   event safeMinted(address owner, string tokenURI, uint256 tokenId);
     /**
      * @dev Minting new NFT to `to` address with certain `uri` + Paying fees to contract owner
      * @param to (address) - destination address to send the newly minted NFTs
@@ -43,6 +43,8 @@ contract NFT is ERC721, ERC721URIStorage, Ownable {
         if (contractBalance > 0) {
             payable(msg.sender).transfer(address(this).balance);
         }
+
+        emit safeMinted(to, uri, tokenId);
     }
 
     // ================= INTERNAL FUNCTIONS =================
