@@ -1,18 +1,16 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Write.css";
-import { Button, useNotification } from "web3uikit";
 const Write: FC = () => {
-  const dispatch = useNotification();
   const navigate = useNavigate();
 
   const handleNoAccount = () => {
-    dispatch({
-      type: "error",
-      message: `You need to connect your wallet to create a story`,
-      title: "Not Connected",
-      position: "topL",
-    });
+    // dispatch({
+    //   type: "error",
+    //   message: `You need to connect your wallet to create a story`,
+    //   title: "Not Connected",
+    //   position: "topL",
+    // });
   };
   const clickHandler = () => {
   };
@@ -30,7 +28,7 @@ const Write: FC = () => {
           </p>
         </div>
         <div className="writeButton">
-          <Button text="Start Writing" onClick={clickHandler} />
+          {/* <Button text="Start Writing" onClick={clickHandler} /> */}
         </div>
       </div>
     </div>

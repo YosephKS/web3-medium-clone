@@ -1,6 +1,5 @@
 import { FC } from "react";
 import "./Rightbar.css";
-import { Input } from "web3uikit";
 
 const Rightbar: FC = () => {
   const trends = [
@@ -21,7 +20,6 @@ const Rightbar: FC = () => {
   return (
     <>
       <div className="rightbarContent">
-        <Input label="Search" name="Search" prefixIcon="search"></Input>
 
         <div className="trends">
           What we are reading Today

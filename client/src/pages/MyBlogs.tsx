@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMoralisWeb3Api, useMoralis } from "react-moralis";
 import axios from "axios";
-import { Button } from "web3uikit";
+// import { Button } from "web3uikit";
 import BlogCard from "../components/BlogCard";
 import "./MyBlogs.css";
 
@@ -113,7 +113,7 @@ const MyBlogs: FC = () => {
             }}
           >
             <p>No Blog Yet</p>
-            <Button text="Create one" onClick={clickHandler} />
+            {/* <Button text="Create one" onClick={clickHandler} /> */}
           </div>
         )}
       </div>

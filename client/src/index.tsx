@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { NotificationProvider } from "web3uikit";
 import { BrowserRouter as Router } from "react-router-dom";
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Failed to find the root element");
@@ -11,11 +10,9 @@ const root = createRoot(rootElement);
 
 root.render(
   <StrictMode>
-    <NotificationProvider>
-      <Router>
-        <App />
-      </Router>
-    </NotificationProvider>
+    <Router>
+      <App />
+    </Router>
   </StrictMode>
 );
 

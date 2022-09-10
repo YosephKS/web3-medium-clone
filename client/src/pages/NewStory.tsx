@@ -1,30 +1,28 @@
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
-import { useNotification } from "web3uikit";
 import "./NewStory.css";
 
 const NewStory: FC = () => {
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const dispatch = useNotification();
 
   const handleSuccess = () => {
-    dispatch({
-      type: "success",
-      message: `Nice! You just mint a Nft!!`,
-      title: "Miniting Succesful",
-      position: "topL",
-    });
+    // dispatch({
+    //   type: "success",
+    //   message: `Nice! You just mint a Nft!!`,
+    //   title: "Miniting Succesful",
+    //   position: "topL",
+    // });
   };
   const handleError = (msg: string) => {
-    dispatch({
-      type: "error",
-      message: `${msg}`,
-      title: "Upload Failed",
-      position: "topL",
-    });
+    // dispatch({
+    //   type: "error",
+    //   message: `${msg}`,
+    //   title: "Upload Failed",
+    //   position: "topL",
+    // });
   };
   const uploadNftMetada = async (url: string) => {
     const metadataNft = {
