@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMoralisWeb3Api, useMoralis } from "react-moralis";
 import axios from "axios";
 // import { Button } from "web3uikit";
 import BlogCard from "../components/BlogCard";
@@ -25,8 +24,6 @@ const MyBlogs: FC = () => {
   const [blogs, setBlogs] = useState<(object | undefined)[] | undefined>();
   const [blogsContent, setBlogsContent] = useState<object[]>();
   const navigate = useNavigate();
-  const Web3Api = useMoralisWeb3Api();
-  const { isInitialized, isAuthenticated, account } = useMoralis();
 
   const clickHandler = () => {
     navigate("/newStory");
@@ -34,25 +31,25 @@ const MyBlogs: FC = () => {
 
   // fetching fro web3api
   const fetchNFTs = async () => {
-    const options = {
-      chain: "mumbai",
-      address: account,
-      token_address: "0x19089c2F05AE286F21467d131e0679902eeffC13",
-    };
+    // const options = {
+    //   chain: "mumbai",
+    //   address: account,
+    //   token_address: "0x19089c2F05AE286F21467d131e0679902eeffC13",
+    // };
     // @ts-ignore
-    const polygonNFTs = await Web3Api.account.getNFTsForContract(options);
-    const tokenUri = polygonNFTs?.result?.map((data: Metadata) => {
-      const { metadata, owner_of } = data;
+    // const polygonNFTs = await Web3Api.account.getNFTsForContract(options);
+    // const tokenUri = polygonNFTs?.result?.map((data: Metadata) => {
+    //   const { metadata, owner_of } = data;
 
-      if (metadata) {
-        const metadataObj = JSON.parse(metadata);
-        const { externalUrl } = metadataObj;
-        return { externalUrl, owner_of };
-      } else {
-        return undefined;
-      }
-    });
-    setBlogs(tokenUri);
+    //   if (metadata) {
+    //     const metadataObj = JSON.parse(metadata);
+    //     const { externalUrl } = metadataObj;
+    //     return { externalUrl, owner_of };
+    //   } else {
+    //     return undefined;
+    //   }
+    // });
+    // setBlogs(tokenUri);
   };
 
   const fextchBlogsContent = async () => {
@@ -73,13 +70,13 @@ const MyBlogs: FC = () => {
     setBlogsContent(contentBlog);
   };
 
-  useEffect(() => {
-    if (isInitialized && isAuthenticated) {
-      fetchNFTs();
-    } else {
-      navigate("/");
-    }
-  }, [isAuthenticated, isInitialized, navigate, account]);
+  // useEffect(() => {
+  //   if (isInitialized && isAuthenticated) {
+  //     fetchNFTs();
+  //   } else {
+  //     navigate("/");
+  //   }
+  // }, [isAuthenticated, isInitialized, navigate, account]);
 
   useEffect(() => {
     if (blogs && blogs.length > 0 && !blogsContent) {

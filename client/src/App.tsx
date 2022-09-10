@@ -4,18 +4,15 @@ import Write from "./pages/Write";
 import NewStory from "./pages/NewStory";
 import MyBlogs from "./pages/MyBlogs";
 import Blog from "./components/Blog";
-import Sidebar from "./components/Sidebart";
 import HomeAuth from "./pages/HomeAuth";
-import Rightbar from "./components/Rightbar";
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import "./App.css";
 
 const App: FC = () => {
   return (
     <>
       <div className="App">
-        <div className="sideBar">
-          <Sidebar />
-        </div>
+        <ConnectButton />
         <div className="mainWindow">
           <Routes>
             <Route path="/" element={<HomeAuth />} />
@@ -24,9 +21,6 @@ const App: FC = () => {
             <Route path="/myBlogs" element={<MyBlogs />} />
             <Route path="/blog/:url" element={<Blog />} />
           </Routes>
-        </div>
-        <div className="rightBar">
-          <Rightbar />
         </div>
       </div>
     </>
