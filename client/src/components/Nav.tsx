@@ -9,12 +9,10 @@ import {
   Container,
   Button,
 } from "@mui/material";
-import { useMoralis } from "react-moralis";
 
 const pages = ["Home", "Write", "Memeber", "AboutUs"];
 
 const Nav: FC = () => {
-  const { authenticate, isAuthenticated } = useMoralis();
   const navigate = useNavigate();
   const clickHandler = (page: string) => {
     if (page === "Home") {
@@ -24,11 +22,6 @@ const Nav: FC = () => {
     }
   };
   const login = async () => {
-    if (!isAuthenticated) {
-      await authenticate({ signingMessage: "Log in using Moralis" }).catch(
-        function (error) {}
-      );
-    }
   };
   return (
     <AppBar position="sticky" sx={{ background: "black" }}>

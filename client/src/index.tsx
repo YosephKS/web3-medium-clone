@@ -2,7 +2,6 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import { MoralisProvider } from "react-moralis";
 import reportWebVitals from "./reportWebVitals";
 import { NotificationProvider } from "web3uikit";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -12,17 +11,11 @@ const root = createRoot(rootElement);
 
 root.render(
   <StrictMode>
-    <MoralisProvider
-      initializeOnMount
-      appId={process.env.REACT_APP_MORALIS_APP_ID ?? ""}
-      serverUrl={process.env.REACT_APP_MORALIS_SERVER_URL ?? ""}
-    >
-      <NotificationProvider>
-        <Router>
-          <App />
-        </Router>
-      </NotificationProvider>
-    </MoralisProvider>
+    <NotificationProvider>
+      <Router>
+        <App />
+      </Router>
+    </NotificationProvider>
   </StrictMode>
 );
 

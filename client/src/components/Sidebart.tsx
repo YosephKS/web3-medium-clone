@@ -1,15 +1,12 @@
 import React from "react";
 import "./Sidebar.css";
 import { Link } from "react-router-dom";
-import { useMoralis } from "react-moralis";
 import HomeIcon from "@mui/icons-material/Home";
 import BookIcon from "@mui/icons-material/Book";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 
 const Sidebar = () => {
-  const { logout } = useMoralis();
   const logOut = async () => {
-    await logout();
   };
 
   return (

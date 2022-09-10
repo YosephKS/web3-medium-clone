@@ -1,7 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import "./HomeAuth.css";
 import BlogCard from "../components/BlogCard";
-import { useMoralisWeb3Api } from "react-moralis";
 import axios from "axios";
 interface Metadata {
   token_address: string;
@@ -21,7 +20,6 @@ interface Metadata {
 const HomeAuth: FC = () => {
   const [blogs, setBlogs] = useState<(object | undefined)[] | undefined>();
   const [blogsContent, setBlogsContent] = useState<object[]>();
-  const Web3Api = useMoralisWeb3Api();
   //fetching from web3Api
   const fetchAllNfts = async () => {
     const options = {

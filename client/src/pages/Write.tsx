@@ -1,10 +1,8 @@
 import { FC, useEffect } from "react";
-import { useMoralis } from "react-moralis";
 import { useNavigate } from "react-router-dom";
 import "./Write.css";
 import { Button, useNotification } from "web3uikit";
 const Write: FC = () => {
-  const { isInitialized, isAuthenticated, account } = useMoralis();
   const dispatch = useNotification();
   const navigate = useNavigate();
 
@@ -17,17 +15,7 @@ const Write: FC = () => {
     });
   };
   const clickHandler = () => {
-    if (account) {
-      navigate("/newStory");
-    } else {
-      handleNoAccount();
-    }
   };
-  useEffect(() => {
-    if (isInitialized && isAuthenticated) {
-      navigate("/newStory");
-    }
-  }, [isAuthenticated, isInitialized, navigate]);
   return (
     <div className="write">
       <div className="writeContent">

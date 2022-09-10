@@ -4,20 +4,11 @@ import Loading from "../components/Loading";
 import { useNotification } from "web3uikit";
 import "./NewStory.css";
 
-import {
-  useMoralisFile,
-  useMoralis,
-  useWeb3ExecuteFunction,
-} from "react-moralis";
 const NewStory: FC = () => {
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const { saveFile } = useMoralisFile();
-  const { Moralis, isInitialized, isAuthenticated, account, authenticate } =
-    useMoralis();
   const dispatch = useNotification();
-  const contractProcessor = useWeb3ExecuteFunction();
 
   const handleSuccess = () => {
     dispatch({
@@ -42,15 +33,15 @@ const NewStory: FC = () => {
       description: title,
       externalUrl: url,
     };
-    const resultNft = await saveFile(
-      "metadata.json",
-      { base64: btoa(JSON.stringify(metadataNft)) },
-      {
-        type: "base64",
-        saveIPFS: true,
-      }
-    );
-    return resultNft;
+    // const resultNft = await saveFile(
+    //   "metadata.json",
+    //   { base64: btoa(JSON.stringify(metadataNft)) },
+    //   {
+    //     type: "base64",
+    //     saveIPFS: true,
+    //   }
+    // );
+    // return resultNft;
   };
 
   const mint = async (account: string, uri: string) => {
@@ -82,29 +73,29 @@ const NewStory: FC = () => {
         to: account,
         uri: uri,
       },
-      msgValue: Moralis.Units.ETH(1),
+      // msgValue: Moralis.Units.ETH(1),
     };
 
-    await contractProcessor.fetch({
-      params: options,
-      onSuccess: () => {
-        handleSuccess();
-        setText("");
-        setTitle("");
-      },
-      onError: (error) => {
-        // @ts-ignore
-        handleError(error.message);
-      },
-    });
+    // await contractProcessor.fetch({
+    //   params: options,
+    //   onSuccess: () => {
+    //     handleSuccess();
+    //     setText("");
+    //     setTitle("");
+    //   },
+    //   onError: (error) => {
+    //     // @ts-ignore
+    //     handleError(error.message);
+    //   },
+    // });
   };
 
   //upload blog content and nft metadata to ipfs and mint
   const uploadFile = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!isAuthenticated) {
-      Moralis.authenticate();
-    }
+    // if (!isAuthenticated) {
+    //   Moralis.authenticate();
+    // }
     // @ts-ignore
     const textArray = text.split();
     const metadata = {
@@ -113,14 +104,14 @@ const NewStory: FC = () => {
     };
     try {
       setLoading(true);
-      const result = await saveFile(
-        "myblog.json",
-        { base64: btoa(JSON.stringify(metadata)) },
-        {
-          type: "base64",
-          saveIPFS: true,
-        }
-      );
+      // const result = await saveFile(
+      //   "myblog.json",
+      //   { base64: btoa(JSON.stringify(metadata)) },
+      //   {
+      //     type: "base64",
+      //     saveIPFS: true,
+      //   }
+      // );
       try {
         // @ts-ignore
         const resultNft = await uploadNftMetada(result.ipfs());
