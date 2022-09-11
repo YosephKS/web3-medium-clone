@@ -1,16 +1,25 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
-import "./index.css";
 import '@rainbow-me/rainbowkit/styles.css';
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { createClient, configureChains, defaultChains, WagmiConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Failed to find the root element");
 const root = createRoot(rootElement);
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#fff"
+    }
+  }
+});
 
 const { provider, webSocketProvider, chains } = configureChains(defaultChains, [publicProvider()]);
 
@@ -31,9 +40,11 @@ root.render(
   <StrictMode>
     <WagmiConfig client={client}>
       <RainbowKitProvider chains={chains}>
-        <Router>
-          <App />
-        </Router>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <App />
+          </Router>
+        </ThemeProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   </StrictMode>

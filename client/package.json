@@ -8,6 +8,7 @@
     "@metamask/detect-provider": "^1.2.0",
     "@mui/icons-material": "^5.8.0",
     "@mui/material": "^5.8.1",
+    "@mui/styled-engine": "^5.10.4",
     "@rainbow-me/rainbowkit": "^0.5.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
