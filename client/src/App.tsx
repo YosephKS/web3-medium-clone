@@ -150,9 +150,8 @@ const App: FC = () => {
           <DrawerHeader />
           <Routes>
             <Route path="/" element={<HomeAuth />} />
-            <Route path="/write" element={<Write />} />
-            <Route path="/newStory" element={<NewStory />} />
-            <Route path="/myBlogs" element={<MyBlogs />} />
+            <Route path="/write" element={<NewStory />} />
+            <Route path="/profile" element={<MyBlogs />} />
             <Route path="/blog/:url" element={<Blog />} />
           </Routes>
         </Box>

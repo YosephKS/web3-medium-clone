@@ -15,7 +15,10 @@ const useWeb3Storage = () => {
             const uploadedCid = await client.put(files);
             setCid(uploadedCid);
             setIsUploading(false);
-            await onSuccess(uploadedCid)
+
+            if (onSuccess) {
+                await onSuccess(uploadedCid)
+            }
         } catch (e) {
             console.error(e);
             setIsUploading(false);

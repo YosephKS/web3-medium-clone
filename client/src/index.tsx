@@ -4,9 +4,9 @@ import App from "./App";
 import '@rainbow-me/rainbowkit/styles.css';
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { createClient, configureChains, defaultChains, WagmiConfig } from 'wagmi';
-import { publicProvider } from 'wagmi/providers/public';
+import { Chain, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { createClient, configureChains, WagmiConfig } from 'wagmi';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const rootElement = document.getElementById("root");
@@ -21,7 +21,52 @@ const theme = createTheme({
   }
 });
 
-const { provider, webSocketProvider, chains } = configureChains(defaultChains, [publicProvider()]);
+const polygonChain: Chain = {
+  id: 137,
+  name: 'Polygon',
+  network: 'polygon',
+  iconUrl: 'https://seeklogo.com/images/P/polygon-matic-logo-1DFDA3A3A8-seeklogo.com.png',
+  iconBackground: '#fff',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Matic',
+    symbol: 'MATIC',
+  },
+  rpcUrls: {
+    default: 'https://polygon-rpc.com/',
+  },
+  blockExplorers: {
+    default: { name: 'PolygonScan', url: 'https://polygonscan.com' },
+    etherscan: { name: 'PolygonScan', url: 'https://polygonscan.com' },
+  },
+};
+
+const mumbaiChain: Chain = {
+  id: 80_001,
+  name: 'Mumbai',
+  network: 'mumbai',
+  iconUrl: 'https://seeklogo.com/images/P/polygon-matic-logo-1DFDA3A3A8-seeklogo.com.png',
+  iconBackground: '#fff',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Matic',
+    symbol: 'MATIC',
+  },
+  rpcUrls: {
+    default: 'https://rpc-mumbai.maticvigil.com/',
+  },
+  blockExplorers: {
+    default: { name: 'PolygonScan', url: 'https://mumbai.polygonscan.com/' },
+    etherscan: { name: 'PolygonScan', url: 'https://mumbai.polygonscan.com/' },
+  },
+};
+
+
+
+const { provider, chains } = configureChains(
+  [polygonChain, mumbaiChain],
+  [jsonRpcProvider({ rpc: chain => ({ http: chain.rpcUrls.default }) })]
+);
 
 const { connectors } = getDefaultWallets({
   appName: 'My RainbowKit App',
@@ -30,9 +75,7 @@ const { connectors } = getDefaultWallets({
 
 const client = createClient({
   provider,
-  webSocketProvider,
   autoConnect: true,
-  // added connectors from rainbowkit
   connectors,
 });
 
