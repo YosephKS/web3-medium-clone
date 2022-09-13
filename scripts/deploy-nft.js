@@ -5,7 +5,7 @@ async function main() {
   const nft = await NFT.deploy(
     "NFT Token",
     "NFT",
-    "1000000000000000000" // 1 ether
+    "10000000000000000" // 0.01 ether
   );
 
   await nft.deployed();

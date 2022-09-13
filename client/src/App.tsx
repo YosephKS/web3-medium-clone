@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import Write from "./pages/Write";
 import NewStory from "./pages/NewStory";
 import MyBlogs from "./pages/MyBlogs";
 import Blog from "./components/Blog";

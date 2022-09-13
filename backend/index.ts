@@ -20,7 +20,9 @@ app.get("/getAllBlogsByUserAddress", async (req: Request, res: Response) => {
   res.send(response);
 });
 
-app.get("/uploadWeb3Storage", async (req: Request, res: Response) => {});
+app.get("/verifyAuth", async (req: Request, res: Response) => {});
+
+app.get("/requestAuth", async (req: Request, res: Response) => {});
 
 app.listen(port, async () => {
   await Moralis.start({

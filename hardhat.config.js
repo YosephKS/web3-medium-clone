@@ -6,57 +6,24 @@ const mnemonic = fs.existsSync(".secret")
   ? fs.readFileSync(".secret").toString().trim()
   : "";
 
+require("dotenv").config();
+
+require("@nomiclabs/hardhat-etherscan");
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
   solidity: "0.8.11",
+  defaultNetwork: "mumbai",
   networks: {
-    mainnet: {
-      url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_SPEEDY_NODES_KEY}/eth/mainnet`,
-      chainId: 1,
-      gas: 5000000,
-      gasPrice: 5e9,
-      accounts: {
-        mnemonic,
-      },
-    },
-    ropsten: {
-      url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_SPEEDY_NODES_KEY}/eth/ropsten`,
-      chainId: 3,
-      gas: 5500000,
-      accounts: {
-        mnemonic,
-      },
-    },
-    goerli: {
-      url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_SPEEDY_NODES_KEY}/eth/goerli`,
-      chainId: 5,
-      gas: 4465030,
-      gasPrice: 10000000000,
-      accounts: {
-        mnemonic,
-      },
-    },
-    rinkeby: {
-      url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_SPEEDY_NODES_KEY}/eth/rinkeby`,
-      chainId: 4,
-      accounts: {
-        mnemonic,
-      },
-    },
-    kovan: {
-      url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_SPEEDY_NODES_KEY}/eth/kovan`,
-      chainId: 42,
-      gas: 3716887,
-      accounts: {
-        mnemonic,
-      },
-    },
     mumbai: {
-      url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_SPEEDY_NODES_KEY}/polygon/mumbai`,
+      url: process.env.MUMBAI_RPC_NODE,
       chainId: 80001,
-      accounts: [""],
+      accounts: { mnemonic },
     },
+  },
+  etherscan: {
+    apiKey: process.env.POLYGONSCAN_API_KEY,
   },
 };
