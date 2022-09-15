@@ -190,7 +190,7 @@ const App: FC = () => {
             })}
           </List>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 7 }}>
           <DrawerHeader />
           <Routes>
             <Route path="/" element={<Dashboard />} />

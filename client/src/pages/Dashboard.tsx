@@ -66,14 +66,16 @@ const HomeAuth: FC = () => {
             {blogs &&
               blogs.map((blog, i) => {
                 // @ts-ignore
+                const { tokenAddress, tokenId } = blog ?? {};
+                // @ts-ignore
                 const { description, name } = blog?.metadata ?? {};
                 return (
                   <BlogCard
                     key={name}
                     title={name}
                     text={description}
-                    ownerOf={""}
-                    externalUrl={""}
+                    tokenAddress={tokenAddress}
+                    tokenId={tokenId}
                   />
                 );
               })}

@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import '@rainbow-me/rainbowkit/styles.css';
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 import { Chain, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { createClient, configureChains, WagmiConfig } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
