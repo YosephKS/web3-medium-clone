@@ -10,12 +10,12 @@ const port = process.env.PORT;
 
 app.get("/getAllBlogsByUserAddress", async (req: Request, res: Response) => {
   const { body } = req ?? {};
-  const { address } = body ?? {};
+  const { address, tokenAddresses } = body ?? {};
 
   const response = await Moralis.EvmApi.nft.getWalletNFTs({
     address,
     chain: EvmChain.POLYGON,
-    token_addresses: ["0xd4509bc86bf5c3ec2be928be5248ae80de95a398"],
+    tokenAddresses,
   });
   res.send(response);
 });

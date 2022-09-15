@@ -1,7 +1,12 @@
-import { FC, useState, useEffect } from "react";
-import "./HomeAuth.css";
+import { FC, useState, useEffect, SyntheticEvent } from "react";
 import BlogCard from "../components/BlogCard";
 import axios from "axios";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Divider from "@mui/material/Divider";
+
 interface Metadata {
   token_address: string;
   token_id: string;
@@ -17,9 +22,25 @@ interface Metadata {
   symbol: string;
 }
 
+const exampleBlogs = [
+  {
+    title: "Title 1",
+    content: "Content 1"
+  },
+  {
+    title: "Title 2",
+    content: "Content 2"
+  },
+  {
+    title: "Title 2",
+    content: "Content 2"
+  },
+]
+
 const HomeAuth: FC = () => {
   const [blogs, setBlogs] = useState<(object | undefined)[] | undefined>();
   const [blogsContent, setBlogsContent] = useState<object[]>();
+  const [tabValue, setTabValue] = useState<number>(0);
   //fetching from web3Api
   const fetchAllNfts = async () => {
     const options = {
@@ -60,6 +81,10 @@ const HomeAuth: FC = () => {
     setBlogsContent(contentBlog);
   };
 
+  const handleChange = (_: SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
+
   useEffect(() => {
     if (!blogs) {
       fetchAllNfts();
@@ -73,25 +98,43 @@ const HomeAuth: FC = () => {
   }, [blogs, blogsContent]);
 
   return (
-    <div className="homeAuth_container">
-      <div className="homeAuth_header">recommended</div>
-      <div className="homeAuth_blogs">
-        {blogsContent &&
-          blogsContent.map((blog, i) => {
-            // @ts-ignore
-            const { title, text, owner_of, externalUrl } = blog;
-            return (
-              <BlogCard
-                key={i}
-                title={title}
-                text={text}
-                ownerOf={owner_of}
-                externalUrl={externalUrl}
-              />
-            );
-          })}
-      </div>
-    </div>
+    <>
+      <Grid container direction="column">
+        <Grid item>
+          <Tabs value={tabValue} onChange={handleChange} textColor="secondary">
+            <Tab label="Explore" />
+            <Tab label="Your Blogs" />
+          </Tabs>
+        </Grid>
+        <Grid item>
+          <Divider />
+        </Grid>
+        <Grid item>
+          <Grid container direction="column" sx={{ m: 2 }}>
+            {tabValue === 0 && (
+              <Grid item>Test 1</Grid>
+            )}
+            {tabValue === 1 && (
+              <Grid item>Test 2</Grid>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
+      {blogsContent &&
+        blogsContent.map((blog, i) => {
+          // @ts-ignore
+          const { title, text, owner_of, externalUrl } = blog;
+          return (
+            <BlogCard
+              key={i}
+              title={title}
+              text={text}
+              ownerOf={owner_of}
+              externalUrl={externalUrl}
+            />
+          );
+        })}
+    </>
   );
 };
 

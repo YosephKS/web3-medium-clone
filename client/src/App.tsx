@@ -1,9 +1,7 @@
 import { FC, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import NewStory from "./pages/NewStory";
-import MyBlogs from "./pages/MyBlogs";
-import Blog from "./components/Blog";
-import HomeAuth from "./pages/HomeAuth";
+import Dashboard from "./pages/Dashboard";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -17,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import EditIcon from '@mui/icons-material/Edit';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -89,6 +88,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const App: FC = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
     setOpen((o) => !o);
@@ -121,9 +121,13 @@ const App: FC = () => {
           <DrawerHeader />
           <Divider />
           <List>
-            {["Dashboard"].map((text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+            {[
+              { title: "Dashboard", icon: DashboardIcon, link: "/" },
+              { title: "New Story", icon: EditIcon, link: "write" }
+            ].map(({ title, icon: Icon, link }, index) => (
+              <ListItem key={title} disablePadding sx={{ display: 'block' }}>
                 <ListItemButton
+                  onClick={() => navigate(link)}
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? 'initial' : 'center',
@@ -137,9 +141,9 @@ const App: FC = () => {
                       justifyContent: 'center',
                     }}
                   >
-                    <DashboardIcon />
+                    <Icon />
                   </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText primary={title} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
               </ListItem>
             ))}
@@ -148,10 +152,8 @@ const App: FC = () => {
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
           <Routes>
-            <Route path="/" element={<HomeAuth />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/write" element={<NewStory />} />
-            <Route path="/profile" element={<MyBlogs />} />
-            <Route path="/blog/:url" element={<Blog />} />
           </Routes>
         </Box>
       </Box>
