@@ -1,131 +1,26 @@
-import { FC, useState } from "react";
+import { FC, useState, FormEvent } from "react";
+import axios from "axios";
 import Loading from "../components/Loading";
 import Button from "@mui/material/Button";
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import "./NewStory.css";
 
 const NewStory: FC = () => {
-  const [title, setTitle] = useState<string>("");
-  const [text, setText] = useState<string>("");
-  const [loading, setLoading] = useState(false);
-
-  const handleSuccess = () => {
-    // dispatch({
-    //   type: "success",
-    //   message: `Nice! You just mint a Nft!!`,
-    //   title: "Miniting Succesful",
-    //   position: "topL",
-    // });
-  };
-  const handleError = (msg: string) => {
-    // dispatch({
-    //   type: "error",
-    //   message: `${msg}`,
-    //   title: "Upload Failed",
-    //   position: "topL",
-    // });
-  };
-  const uploadNftMetada = async (url: string) => {
-    const metadataNft = {
-      image:
-        "https://ipfs.moralis.io:2053/ipfs/QmWEsG4ayh75BMk2H1CowAdALPjsi3fD7CSZ6qxNM1yNnz/image/moralis.png",
-      description: title,
-      externalUrl: url,
-    };
-    // const resultNft = await saveFile(
-    //   "metadata.json",
-    //   { base64: btoa(JSON.stringify(metadataNft)) },
-    //   {
-    //     type: "base64",
-    //     saveIPFS: true,
-    //   }
-    // );
-    // return resultNft;
-  };
-
-  const mint = async (account: string, uri: string) => {
-    setLoading(false);
-    let options = {
-      contractAddress: "0x19089c2F05AE286F21467d131e0679902eeffC13",
-      functionName: "safeMint",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "to",
-              type: "address",
-            },
-            {
-              internalType: "string",
-              name: "uri",
-              type: "string",
-            },
-          ],
-          name: "safeMint",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function",
-        },
-      ],
-      params: {
-        to: account,
-        uri: uri,
-      },
-      // msgValue: Moralis.Units.ETH(1),
-    };
-
-    // await contractProcessor.fetch({
-    //   params: options,
-    //   onSuccess: () => {
-    //     handleSuccess();
-    //     setText("");
-    //     setTitle("");
-    //   },
-    //   onError: (error) => {
-    //     // @ts-ignore
-    //     handleError(error.message);
-    //   },
-    // });
-  };
+  const [blog, setBlog] = useState({ name: "", description: "" });
+  const [loading, setLoading] = useState<boolean>(false);
 
   //upload blog content and nft metadata to ipfs and mint
-  const uploadFile = async (event: React.FormEvent<HTMLFormElement>) => {
+  const uploadFile = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // if (!isAuthenticated) {
-    //   Moralis.authenticate();
-    // }
-    // @ts-ignore
-    const textArray = text.split();
-    const metadata = {
-      title,
-      text: textArray,
-    };
+
     try {
       setLoading(true);
-      // const result = await saveFile(
-      //   "myblog.json",
-      //   { base64: btoa(JSON.stringify(metadata)) },
-      //   {
-      //     type: "base64",
-      //     saveIPFS: true,
-      //   }
-      // );
-      try {
-        // @ts-ignore
-        const resultNft = await uploadNftMetada(result.ipfs());
-        // @ts-ignore
-        await mint(account, resultNft.ipfs());
-        setLoading(false);
-        //setVisible(true);
-      } catch (error) {
-        setLoading(false);
-        // @ts-ignore
-        handleError(error.message);
-      }
+      const { data } = await axios.post("http://localhost:8000/uploadWeb3Storage", {
+        blog
+      });
+      console.log(data?.cid);
     } catch (error) {
       setLoading(false);
-      // @ts-ignore
-      handleError(error.message);
     }
   };
 
@@ -137,18 +32,16 @@ const NewStory: FC = () => {
         <div>
           <form onSubmit={uploadFile} className="writeForm">
             <div className="writeFormGroup">
-              <label htmlFor="fileInput">
-                <i className="writeIcon fas fa-plus"></i>
-              </label>
+              <ControlPointIcon />
               <input id="fileInput" type="file" style={{ display: "none" }} />
               <input
                 className="writeInput"
                 placeholder="Title"
                 type="text"
                 autoFocus={true}
-                value={title}
+                value={blog?.name}
                 style={{ marginLeft: "1rem" }}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => setBlog({ ...blog, name: e.target.value })}
               />
             </div>
             <div className="writeFormGroup">
@@ -156,8 +49,8 @@ const NewStory: FC = () => {
                 className="writeInput writeText"
                 placeholder="Tell your story..."
                 autoFocus={true}
-                value={text}
-                onChange={(e) => setText(e.target.value)}
+                value={blog?.description}
+                onChange={(e) => setBlog({ ...blog, description: e.target.value })}
                 style={{ marginTop: "1rem" }}
               />
             </div>

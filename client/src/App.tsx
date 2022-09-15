@@ -4,7 +4,7 @@ import axios from "axios";
 import NewStory from "./pages/NewStory";
 import Dashboard from "./pages/Dashboard";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount, useSignMessage, useNetwork } from 'wagmi'
+import { useAccount, useSignMessage } from 'wagmi'
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -92,7 +92,6 @@ const App: FC = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { isConnected, address } = useAccount();
-  const { chain } = useNetwork();
   const { signMessageAsync } = useSignMessage();
 
   const handleDrawerOpen = () => {
@@ -108,20 +107,19 @@ const App: FC = () => {
         },
       });
 
-    console.log(data);
-
     const message = data?.message;
 
     const signature = await signMessageAsync({ message });
 
-    // redirect user after success authentication to '/user' page
-    // const verify = await axios.post('http://localhost:8000/requestAuth',
-    //   { message, signature }
-    //   , {
-    //     headers: {
-    //       'content-type': 'application/json',
-    //     },
-    //   });
+    const verify = await axios.post('http://localhost:8000/verifyAuth',
+      { message, signature }
+      , {
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+
+    console.log(verify);
   };
 
   useEffect(() => {

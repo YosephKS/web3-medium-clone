@@ -8,7 +8,7 @@ const useWeb3Storage = () => {
 
     const uploadFiles = async (
         files: Array<File>,
-        onSuccess: (cid: string) => any
+        onSuccess?: (cid: string) => any
     ) => {
         try {
             setIsUploading(true);

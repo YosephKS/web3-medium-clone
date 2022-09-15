@@ -1,8 +1,10 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
 import cors from "cors";
 import Moralis from "moralis";
 import { EvmChain } from "@moralisweb3/evm-utils";
+import { Web3Storage, Blob, File } from "web3.storage";
 
 dotenv.config();
 
@@ -10,6 +12,9 @@ const app: Express = express();
 const port = process.env.PORT;
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
+
+const client = new Web3Storage({ token: process.env.WEB3_STORAGE_TOKEN ?? "" });
 
 app.get("/getAllBlogsByUserAddress", async (req: Request, res: Response) => {
   try {
@@ -76,6 +81,20 @@ app.post("/verifyAuth", async (req: Request, res: Response) => {
   } catch (e) {
     res.status(400).send(e);
   }
+});
+
+app.post("/uploadWeb3Storage", async (req: Request, res: Response) => {
+  // try {
+  const { body } = req ?? {};
+  const { blog } = body ?? {};
+  const blob = new Blob([JSON.stringify({ ...blog })], {
+    type: "application/json",
+  });
+  const cid = await client.put([new File([blob], "metadata.json")]);
+  res.send({ cid });
+  // } catch (e) {
+  //   res.status(400).send(e);
+  // }
 });
 
 app.listen(port, async () => {

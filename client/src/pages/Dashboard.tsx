@@ -5,6 +5,8 @@ import Grid from "@mui/material/Grid";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Divider from "@mui/material/Divider";
+import { useAccount } from 'wagmi'
+
 
 interface Metadata {
   token_address: string;
@@ -38,6 +40,7 @@ const exampleBlogs = [
 
 const HomeAuth: FC = () => {
   const [blogs, setBlogs] = useState<(object | undefined)[] | undefined>();
+  const { address } = useAccount();
   const [blogsContent, setBlogsContent] = useState<object[]>([
     {
       title: "Test 1",
@@ -62,14 +65,21 @@ const HomeAuth: FC = () => {
     },
   ]);
   const [tabValue, setTabValue] = useState<number>(0);
-  //fetching from web3Api
-  const fetchAllNfts = async () => {
+
+
+  const fetchAllNftsByUser = async () => {
     const res = await axios.get("http://localhost:8000/getAllBlogsByUserAddress", {
       params: {
-        address: "0xc7486219881C780B676499868716B27095317416",
+        address,
       }
     });
-    console.log(res?.data);
+    console.log(res);
+    // setBlogs(res?.data);
+  };
+
+  const fetchAllNfts = async () => {
+    const res = await axios.get("http://localhost:8000/getAllBlogs");
+    console.log(res);
     // setBlogs(res?.data);
   };
 
@@ -78,8 +88,16 @@ const HomeAuth: FC = () => {
   };
 
   useEffect(() => {
-    fetchAllNfts();
-  }, []);
+    switch (tabValue) {
+      case 0:
+        fetchAllNfts();
+        break;
+      case 1:
+      default:
+        fetchAllNftsByUser();
+        break;
+    }
+  }, [tabValue]);
 
   // useEffect(() => {
   //   if (blogs && !blogsContent) {
