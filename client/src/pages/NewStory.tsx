@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
+import Button from "@mui/material/Button";
 import "./NewStory.css";
 
 const NewStory: FC = () => {
@@ -147,6 +147,7 @@ const NewStory: FC = () => {
                 type="text"
                 autoFocus={true}
                 value={title}
+                style={{ marginLeft: "1rem" }}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
@@ -157,11 +158,12 @@ const NewStory: FC = () => {
                 autoFocus={true}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
+                style={{ marginTop: "1rem" }}
               />
             </div>
-            <button className="writeSubmit" type="submit">
+            <Button color="secondary" variant="contained" type="submit">
               Publish
-            </button>
+            </Button>
           </form>
         </div>
       )}

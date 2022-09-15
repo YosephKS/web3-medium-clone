@@ -40,8 +40,21 @@ const exampleBlogs = [
 const HomeAuth: FC = () => {
   const [blogs, setBlogs] = useState<(object | undefined)[] | undefined>();
   const [blogsContent, setBlogsContent] = useState<object[]>([
-    { title: "Test 1", text: "sadfads", "owner_of": "0x001" },
-    { title: "Test 2", text: "sadfads", "owner_of": "0x002" }
+    {
+      title: "Test 1",
+      text: `
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    `,
+      "owner_of": "0x001"
+    },
+    { title: "Test 2", text: "sadfads", "owner_of": "0x002" },
+    {
+      title: "Test 3",
+      text: `
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    `,
+      "owner_of": "0x003"
+    },
   ]);
   const [tabValue, setTabValue] = useState<number>(0);
   //fetching from web3Api

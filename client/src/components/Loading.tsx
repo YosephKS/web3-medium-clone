@@ -8,7 +8,7 @@ const Loading: FC<ChildProps> = ({ open }) => {
   return (
     <div className="loading_spinner">
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
       >
         <CircularProgress color="inherit" />
