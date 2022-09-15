@@ -97,7 +97,7 @@ const App: FC = () => {
   const { isConnected } = useAccount({
     onConnect: async ({ address, isReconnected }) => {
       if (address && !isReconnected) {
-        const { data } = await axios.post('http://localhost:8000/requestAuth',
+        const { data } = await axios.post(`${process.env.REACT_APP_BACKEND}/requestAuth`,
           { address }
           , {
             headers: {
@@ -109,7 +109,7 @@ const App: FC = () => {
 
         const signature = await signMessageAsync({ message });
 
-        await axios.post('http://localhost:8000/verifyAuth',
+        await axios.post(`${process.env.REACT_APP_BACKEND}/verifyAuth`,
           { message, signature }
           , {
             headers: {

@@ -14,7 +14,7 @@ const HomeAuth: FC = () => {
 
 
   const fetchAllNftsByUser = useCallback(async () => {
-    const res = await axios.get("http://localhost:8000/getAllBlogsByUserAddress", {
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND}/getAllBlogsByUserAddress`, {
       params: {
         address,
       }
@@ -23,7 +23,7 @@ const HomeAuth: FC = () => {
   }, [address]);
 
   const fetchAllNfts = useCallback(async () => {
-    const res = await axios.get("http://localhost:8000/getAllBlogs");
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND}/getAllBlogs`);
     setBlogs(res?.data);
   }, []);
 

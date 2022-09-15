@@ -37,7 +37,7 @@ const NewStory: FC = () => {
 
     try {
       setLoading(true);
-      const { data } = await axios.post("http://localhost:8000/uploadWeb3Storage", {
+      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND}/uploadWeb3Storage`, {
         blog
       });
       setCid(data?.cid);
