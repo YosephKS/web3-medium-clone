@@ -19,7 +19,7 @@
   "scripts": {
     "start": "concurrently \"npx tsc --watch\" \"nodemon -q index.ts\"",
     "build": "npx tsc",
-    "serve": "node index.ts"
+    "serve": "node index.js"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12"
