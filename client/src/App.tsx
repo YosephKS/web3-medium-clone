@@ -1,5 +1,5 @@
-import { FC, useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { FC, useState } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import NewStory from "./pages/NewStory";
 import Dashboard from "./pages/Dashboard";
@@ -23,6 +23,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Tooltip from "@mui/material/Tooltip";
 import MediumLogo from "./assets/logo.svg";
 
 const drawerWidth = 240;
@@ -91,42 +92,41 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const App: FC = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const { isConnected, address } = useAccount();
+  const { pathname } = useLocation();
   const { signMessageAsync } = useSignMessage();
+  const { isConnected } = useAccount({
+    onConnect: async ({ address, isReconnected }) => {
+      if (address && !isReconnected) {
+        const { data } = await axios.post('http://localhost:8000/requestAuth',
+          { address }
+          , {
+            headers: {
+              'content-type': 'application/json',
+            },
+          });
 
+        const message = data?.message;
+
+        const signature = await signMessageAsync({ message });
+
+        await axios.post('http://localhost:8000/verifyAuth',
+          { message, signature }
+          , {
+            headers: {
+              'content-type': 'application/json',
+            },
+          });
+
+      }
+    }
+  });
+
+  /**
+   * @description Handle opening and closing Drawer (Sidebar) component
+   */
   const handleDrawerOpen = () => {
     setOpen((o) => !o);
   };
-
-  const handleAuth = async () => {
-    const { data } = await axios.post('http://localhost:8000/requestAuth',
-      { address }
-      , {
-        headers: {
-          'content-type': 'application/json',
-        },
-      });
-
-    const message = data?.message;
-
-    const signature = await signMessageAsync({ message });
-
-    const verify = await axios.post('http://localhost:8000/verifyAuth',
-      { message, signature }
-      , {
-        headers: {
-          'content-type': 'application/json',
-        },
-      });
-
-    console.log(verify);
-  };
-
-  useEffect(() => {
-    if (isConnected) {
-      handleAuth()
-    }
-  }, [isConnected]);
 
   return (
     <>
@@ -157,37 +157,44 @@ const App: FC = () => {
           <List>
             {[
               { title: "Dashboard", icon: DashboardIcon, link: "/" },
-              { title: "New Story", icon: EditIcon, link: "write" }
-            ].map(({ title, icon: Icon, link }, index) => (
-              <ListItem key={title} disablePadding sx={{ display: 'block' }}>
-                <ListItemButton
-                  onClick={() => navigate(link)}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Icon />
-                  </ListItemIcon>
-                  <ListItemText primary={title} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+              (isConnected && { title: "New Story", icon: EditIcon, link: "/write" })
+              // @ts-ignore
+            ].filter(Boolean).map(({ title, icon: Icon, link }) => {
+              return (
+                <Tooltip title={title} key={title} placement="right">
+                  <ListItem key={title} disablePadding sx={{ display: 'block' }}>
+                    <ListItemButton
+                      onClick={() => pathname !== link && navigate(link)}
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Icon
+                          color={pathname === link ? "secondary" : "inherit"}
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary={title} sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                  </ListItem>
+                </Tooltip>
+              )
+            })}
           </List>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/write" element={<NewStory />} />
+            {isConnected && <Route path="/write" element={<NewStory />} />}
           </Routes>
         </Box>
       </Box>

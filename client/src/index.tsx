@@ -17,6 +17,9 @@ const theme = createTheme({
   palette: {
     primary: {
       main: "#fff"
+    },
+    secondary: {
+      main: "#0e76fd"
     }
   }
 });
@@ -64,7 +67,7 @@ const mumbaiChain: Chain = {
 
 
 const { provider, chains } = configureChains(
-  [polygonChain, mumbaiChain],
+  [mumbaiChain, polygonChain],
   [jsonRpcProvider({ rpc: chain => ({ http: chain.rpcUrls.default }) })]
 );
 
@@ -82,7 +85,7 @@ const client = createClient({
 root.render(
   <StrictMode>
     <WagmiConfig client={client}>
-      <RainbowKitProvider chains={chains}>
+      <RainbowKitProvider coolMode chains={chains}>
         <ThemeProvider theme={theme}>
           <Router>
             <App />

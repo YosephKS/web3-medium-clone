@@ -84,17 +84,17 @@ app.post("/verifyAuth", async (req: Request, res: Response) => {
 });
 
 app.post("/uploadWeb3Storage", async (req: Request, res: Response) => {
-  // try {
-  const { body } = req ?? {};
-  const { blog } = body ?? {};
-  const blob = new Blob([JSON.stringify({ ...blog })], {
-    type: "application/json",
-  });
-  const cid = await client.put([new File([blob], "metadata.json")]);
-  res.send({ cid });
-  // } catch (e) {
-  //   res.status(400).send(e);
-  // }
+  try {
+    const { body } = req ?? {};
+    const { blog } = body ?? {};
+    const blob = new Blob([JSON.stringify({ ...blog })], {
+      type: "application/json",
+    });
+    const cid = await client.put([new File([blob], "metadata.json")]);
+    res.send({ cid });
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 app.listen(port, async () => {
