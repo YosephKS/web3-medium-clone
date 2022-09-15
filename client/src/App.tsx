@@ -1,8 +1,10 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import axios from "axios";
 import NewStory from "./pages/NewStory";
 import Dashboard from "./pages/Dashboard";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount, useSignMessage, useNetwork } from 'wagmi'
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -89,10 +91,44 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const App: FC = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { isConnected, address } = useAccount();
+  const { chain } = useNetwork();
+  const { signMessageAsync } = useSignMessage();
 
   const handleDrawerOpen = () => {
     setOpen((o) => !o);
   };
+
+  const handleAuth = async () => {
+    const { data } = await axios.post('http://localhost:8000/requestAuth',
+      { address }
+      , {
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+
+    console.log(data);
+
+    const message = data?.message;
+
+    const signature = await signMessageAsync({ message });
+
+    // redirect user after success authentication to '/user' page
+    // const verify = await axios.post('http://localhost:8000/requestAuth',
+    //   { message, signature }
+    //   , {
+    //     headers: {
+    //       'content-type': 'application/json',
+    //     },
+    //   });
+  };
+
+  useEffect(() => {
+    if (isConnected) {
+      handleAuth()
+    }
+  }, [isConnected]);
 
   return (
     <>
