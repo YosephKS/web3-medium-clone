@@ -39,7 +39,10 @@ const exampleBlogs = [
 
 const HomeAuth: FC = () => {
   const [blogs, setBlogs] = useState<(object | undefined)[] | undefined>();
-  const [blogsContent, setBlogsContent] = useState<object[]>();
+  const [blogsContent, setBlogsContent] = useState<object[]>([
+    { title: "Test 1", text: "sadfads", "owner_of": "0x001" },
+    { title: "Test 2", text: "sadfads", "owner_of": "0x002" }
+  ]);
   const [tabValue, setTabValue] = useState<number>(0);
   //fetching from web3Api
   const fetchAllNfts = async () => {
@@ -91,11 +94,11 @@ const HomeAuth: FC = () => {
     }
   }, [blogs]);
 
-  useEffect(() => {
-    if (blogs && !blogsContent) {
-      fextchBlogsContent();
-    }
-  }, [blogs, blogsContent]);
+  // useEffect(() => {
+  //   if (blogs && !blogsContent) {
+  //     fextchBlogsContent();
+  //   }
+  // }, [blogs, blogsContent]);
 
   return (
     <>
@@ -111,29 +114,24 @@ const HomeAuth: FC = () => {
         </Grid>
         <Grid item>
           <Grid container direction="column" sx={{ m: 2 }}>
-            {tabValue === 0 && (
-              <Grid item>Test 1</Grid>
-            )}
-            {tabValue === 1 && (
-              <Grid item>Test 2</Grid>
-            )}
+            {blogsContent &&
+              blogsContent.map((blog, i) => {
+                // @ts-ignore
+                const { title, text, owner_of, externalUrl } = blog;
+                return (
+                  <BlogCard
+                    key={i}
+                    title={title}
+                    text={text}
+                    ownerOf={owner_of}
+                    externalUrl={externalUrl}
+                  />
+                );
+              })}
           </Grid>
         </Grid>
       </Grid>
-      {blogsContent &&
-        blogsContent.map((blog, i) => {
-          // @ts-ignore
-          const { title, text, owner_of, externalUrl } = blog;
-          return (
-            <BlogCard
-              key={i}
-              title={title}
-              text={text}
-              ownerOf={owner_of}
-              externalUrl={externalUrl}
-            />
-          );
-        })}
+
     </>
   );
 };
