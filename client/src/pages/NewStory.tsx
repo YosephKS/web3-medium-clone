@@ -28,7 +28,10 @@ const NewStory: FC = () => {
     write
   } = useContractWrite({
     ...config,
-    onSuccess: () => navigate("/")
+    onSuccess: () => {
+      setLoading(false);
+      navigate("/");
+    }
   });
 
   //upload blog content and nft metadata to ipfs and mint
@@ -41,7 +44,6 @@ const NewStory: FC = () => {
         blog
       });
       setCid(data?.cid);
-      setLoading(false);
     } catch (error) {
       setLoading(false);
     }
@@ -63,13 +65,13 @@ const NewStory: FC = () => {
       <div>
         <form onSubmit={uploadFile} className="writeForm">
           <div className="writeFormGroup">
-            <input id="fileInput" type="file" style={{ display: "none" }} />
             <input
               className="writeInput"
               placeholder="Title"
               type="text"
               autoFocus={true}
               value={blog?.name}
+              disabled={loading || isContractWriteLoading}
               onChange={(e) => setBlog({ ...blog, name: e.target.value })}
             />
           </div>
@@ -81,6 +83,7 @@ const NewStory: FC = () => {
               rows={5}
               value={blog?.description}
               onChange={(e) => setBlog({ ...blog, description: e.target.value })}
+              disabled={loading || isContractWriteLoading}
               style={{ marginTop: "1rem" }}
             />
           </div>

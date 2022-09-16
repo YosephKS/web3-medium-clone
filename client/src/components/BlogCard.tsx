@@ -4,17 +4,19 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { useContractRead } from 'wagmi';
 import Tooltip from "@mui/material/Tooltip";
+import Fade from "@mui/material/Fade";
 import IconButton from '@mui/material/IconButton';
 import LaunchIcon from '@mui/icons-material/Launch';
 import NFTABI from "../contracts/NFT.sol/NFT.json";
 
 interface ChildProps {
+  index: number;
   text: string;
   title: string;
   tokenAddress: string;
   tokenId: string;
 }
-const BlogCard: FC<ChildProps> = ({ text, title, tokenAddress, tokenId }) => {
+const BlogCard: FC<ChildProps> = ({ index, text, title, tokenAddress, tokenId }) => {
   const { data: ownerOf } = useContractRead({
     addressOrName: tokenAddress,
     contractInterface: NFTABI?.abi,
@@ -23,7 +25,7 @@ const BlogCard: FC<ChildProps> = ({ text, title, tokenAddress, tokenId }) => {
   })
 
   return (text && title) ? (
-    <>
+    <Fade in={true} unmountOnExit timeout={500 * (index + 1)}>
       <Grid container direction="column">
         <Grid item>
           <Grid container my={2}>
@@ -31,10 +33,10 @@ const BlogCard: FC<ChildProps> = ({ text, title, tokenAddress, tokenId }) => {
               item
               xs={2}
               style={{
-                backgroundImage: "url(https://ipfs.moralis.io:2053/ipfs/QmWEsG4ayh75BMk2H1CowAdALPjsi3fD7CSZ6qxNM1yNnz/image/moralis.png)",
+                backgroundImage: "url(https://filecoin.io/uploads/moralis-hackathon.png)",
                 height: "10rem",
                 backgroundPosition: "center",
-                backgroundSize: "cover",
+                backgroundSize: "contain",
                 backgroundRepeat: "no-repeat"
               }}
             />
@@ -82,7 +84,7 @@ const BlogCard: FC<ChildProps> = ({ text, title, tokenAddress, tokenId }) => {
           <Divider />
         </Grid>
       </Grid>
-    </>
+    </Fade>
   ) : (
     <></>
   );
