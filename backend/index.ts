@@ -87,9 +87,17 @@ app.post("/uploadWeb3Storage", async (req: Request, res: Response) => {
   try {
     const { body } = req ?? {};
     const { blog } = body ?? {};
-    const blob = new Blob([JSON.stringify({ ...blog })], {
-      type: "application/json",
-    });
+    const blob = new Blob(
+      [
+        JSON.stringify({
+          ...blog,
+          image: "https://filecoin.io/uploads/moralis-hackathon.png",
+        }),
+      ],
+      {
+        type: "application/json",
+      }
+    );
     const cid = await client.put([new File([blob], "metadata.json")]);
     res.send({ cid });
   } catch (e) {
